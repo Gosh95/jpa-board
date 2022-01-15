@@ -1,1 +1,26 @@
+spring:
+  profiles:
+    active: local
 
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/jpaboard
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
+server:
+  port: 3030
+
+logging:
+  level:
+    org.hibernate.SQL: debug

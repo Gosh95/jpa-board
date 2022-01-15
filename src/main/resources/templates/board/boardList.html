@@ -5,8 +5,34 @@
 <nav th:replace="~{/fragments/fragmentNavigator :: nav}" />
 
 <main class="container">
-  <div class="bg-light p-5 rounded starter-template">
-    <h1>BoardList</h1>
+  <div class="bg-light p-3 rounded starter-template">
+    <h3>게시판</h3>
+  </div>
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">제목</th>
+      <th scope="col">작성자</th>
+      <th scope="col">날짜</th>
+      <th scope="col">추천</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="board : ${boards}">
+      <th scope="row" th:text="${board.id}">1</th>
+      <td th:onclick="|location.href='@{/boards/{boardId} (boardId = ${board.id})}'|" th:text="${board.title}" th:class="'pointer'">Mark</td>
+      <td th:text="${null}">@mdo</td>
+      <td th:text="${#temporals.format(board.createdAt, 'yy.MM.dd HH:mm')}">Otto</td>
+      <td th:text="${null}">@mdo</td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="write-btn">
+    <button th:onclick="|location.href='@{/boards/new-board}'|" type="button" class="btn btn-dar k">
+      <span><i class="fas fa-pencil-alt"></i></span>
+      <span>글쓰기</span>
+    </button>
   </div>
 </main>
 
