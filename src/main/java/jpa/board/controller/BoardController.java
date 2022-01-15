@@ -9,9 +9,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -38,7 +42,15 @@ public class BoardController {
     }
 
     @PostMapping("/new-board")
-    public String createBoard(@ModelAttribute BoardDto boardDto, RedirectAttributes redirectAttributes) {
+    public String createBoard(@Valid @ModelAttribute BoardDto boardDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if(bindingResult.hasFieldErrors()) {
+            List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+
+            fieldErrors.forEach((error) -> log.error("field: {}, error : {}", error.getField(), error.getDefaultMessage()));
+
+            return "/board/boardForm";
+        }
+
         Board board = new Board();
         Board newBoard = board.createBoard(boardDto);
 

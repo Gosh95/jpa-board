@@ -56,8 +56,20 @@
     margin-left: 4px;
 }
 
-.btn-dark {
+.btn-dark:hover {
     opacity: 80%;
     transform: scale(0.9);
 }
 
+.form-error {
+    display: none;
+}
+
+.error-message {
+    color: #f41c1c;
+    font-weight: 600;
+}
+
+.space {
+    margin-bottom: 20px;
+}

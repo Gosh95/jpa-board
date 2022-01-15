@@ -8,23 +8,26 @@
     <div class="bg-light p-3 rounded starter-template main-title">
         <h3>글쓰기</h3>
     </div>
-    <form th:action="@{/boards/new-board}" th:method="post" th:object="${boardDto}">
+    <form th:action="@{/boards/new-board}" th:method="'post'" th:object="${boardDto}">
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="title" th:field="*{title}" placeholder="제목">
+            <input type="text" class="form-control" id="title" th:field="*{title}" placeholder="제목" th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'">
             <label for="title">제목</label>
+            <span th:if="${#fields.hasErrors('title')}" class="error-message" th:text="|💣 ${#fields.errors('title').get(0)}|"></span>
         </div>
+
         <div class="form-floating">
-            <textarea class="form-control" placeholder="내용" id="content" th:field="*{content}" style="height: 400px">
+            <textarea class="form-control" placeholder="내용" id="content" th:field="*{content}" th:classappend="${#fields.hasErrors('content')} ? 'is-invalid'" style="height: 400px">
             </textarea>
             <span class="content-length">(0 / 300)</span>
             <label for="content">내용</label>
+            <span th:if="${#fields.hasErrors('content')}" class="error-message" th:text="|💣 ${#fields.errors('content').get(0)}|"></span>
         </div>
 
         <div class="write-btn">
             <button type="submit" class="btn btn-dark">
                 <span>확인</span>
             </button>
-            <button type="button" class="btn btn-dark">
+            <button th:onclick="|location.href='@{/boards}'|" type="button" class="btn btn-dark">
                 <span>취소</span>
             </button>
         </div>
