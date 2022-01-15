@@ -5,21 +5,32 @@
 <nav th:replace="~{/fragments/fragmentNavigator :: nav}" />
 
 <main class="container">
-    <div class="bg-light p-3 rounded starter-template">
+    <div class="bg-light p-3 rounded starter-template main-title">
         <h3>글쓰기</h3>
     </div>
     <form th:action="@{/boards/new-board}" th:method="post" th:object="${boardDto}">
-    <div class="form-floating mb-3">
-        <input type="text" class="form-control" id="title" th:field="*{title}" placeholder="제목">
-        <label for="title">제목</label>
-    </div>
-    <div class="form-floating">
-        <textarea class="form-control" placeholder="내용" id="content" th:field="*{content}" style="height: 400px">
-        </textarea>
-        <span class="content-length">(0 / 300)</span>
-        <label for="content">내용</label>
-    </div>
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="title" th:field="*{title}" placeholder="제목">
+            <label for="title">제목</label>
+        </div>
+        <div class="form-floating">
+            <textarea class="form-control" placeholder="내용" id="content" th:field="*{content}" style="height: 400px">
+            </textarea>
+            <span class="content-length">(0 / 300)</span>
+            <label for="content">내용</label>
+        </div>
+
+        <div class="write-btn">
+            <button type="submit" class="btn btn-dark">
+                <span>확인</span>
+            </button>
+            <button type="button" class="btn btn-dark">
+                <span>취소</span>
+            </button>
+        </div>
     </form>
+
+
 
     <div id="back" class="none">
     <div class="modal" tabindex="-1">
@@ -66,7 +77,7 @@
         modal.className = "visible";
         back.className = "blind";
 
-        contentArea.value = String(contentArea.value).substring(0, 10);
+        contentArea.value = String(contentArea.value).substring(0, 300);
     }
 
     function modalOff(length) {
@@ -75,7 +86,7 @@
     }
 
     function handleModal(length) {
-        (length > 10) ? modalOn(length) : modalOff();
+        (length > 300) ? modalOn(length) : modalOff();
     }
 
     function displayLength(length) {

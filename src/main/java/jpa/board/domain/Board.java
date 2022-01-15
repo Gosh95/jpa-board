@@ -1,5 +1,6 @@
 package jpa.board.domain;
 
+import jpa.board.dto.BoardDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,4 +30,11 @@ public class Board extends TimeEntity {
     @BatchSize(size = 200)
     @OneToMany(mappedBy = "board")
     private List<Comment> comments = new ArrayList<>();
+
+    public Board createBoard(BoardDto boardDto) {
+        this.title = boardDto.getTitle();
+        this.content = boardDto.getContent();
+
+        return this;
+    }
 }

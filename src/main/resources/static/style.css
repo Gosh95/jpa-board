@@ -6,6 +6,10 @@
     cursor: pointer;
 }
 
+.main-title {
+    margin-bottom: 20px;
+}
+
 .pointer:hover {
     cursor: pointer;
     text-decoration: underline;
@@ -46,3 +50,14 @@
 .visible {
     visibility: visible;
 }
+
+.btn-dark {
+    margin-top: 10px;
+    margin-left: 4px;
+}
+
+.btn-dark {
+    opacity: 80%;
+    transform: scale(0.9);
+}
+
