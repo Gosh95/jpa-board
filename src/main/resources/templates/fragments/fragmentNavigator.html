@@ -13,6 +13,9 @@
         <li class="nav-item">
           <a class="nav-link" th:classappend="${#request.getServletPath() == '/boards'} ? 'active'" th:href="@{/boards}">게시판</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" th:classappend="${#request.getServletPath() == '/boards/new-board'} ? 'active'" th:href="@{/boards/new-board}">글쓰기</a>
+        </li>
       </ul>
       <form class="d-flex">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

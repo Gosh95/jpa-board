@@ -43,4 +43,8 @@ public class BoardService {
     public List<Board> findAllBoard() {
         return boardRepository.findAll();
     }
+
+    public void deleteBoard(Long id) {
+        boardRepository.delete(findBoard(id));
+    }
 }

@@ -5,14 +5,12 @@
 <nav th:replace="~{/fragments/fragmentNavigator :: nav}" />
 
 <main class="container">
-    <div class="bg-light p-3 rounded starter-template main-title">
-        <h3>글쓰기</h3>
-    </div>
+    <div th:replace="~{/fragments/fragmentTitle :: title ('글쓰기')}"></div>
     <form th:action="@{/boards/new-board}" th:method="'post'" th:object="${boardDto}">
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="title" th:field="*{title}" placeholder="제목" th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'">
+            <input type="text" class="form-control" id="title" th:field="*{title}" placeholder="제목" th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'" maxlength="30"/>
             <label for="title">제목</label>
-            <span th:if="${#fields.hasErrors('title')}" class="error-message" th:text="|💣 ${#fields.errors('title').get(0)}|"></span>
+            <span th:if="${#fields.hasErrors('title')}" class="error-message" th:text="|'💣' ${#fields.errors('title').get(0)}|"></span>
         </div>
 
         <div class="form-floating">
@@ -20,7 +18,7 @@
             </textarea>
             <span class="content-length">(0 / 300)</span>
             <label for="content">내용</label>
-            <span th:if="${#fields.hasErrors('content')}" class="error-message" th:text="|💣 ${#fields.errors('content').get(0)}|"></span>
+            <span th:if="${#fields.hasErrors('content')}" class="error-message" th:text="|'💣' ${#fields.errors('content').get(0)}|"></span>
         </div>
 
         <div class="write-btn">

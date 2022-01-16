@@ -7,6 +7,7 @@ import jpa.board.repository.BoardRepository;
 import jpa.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -38,7 +40,7 @@ public class BoardController {
     public String createBoardForm(Model model) {
         model.addAttribute("boardDto", new BoardDto());
 
-        return "/board/boardForm";
+        return "/board/createBoardForm";
     }
 
     @PostMapping("/new-board")
@@ -48,7 +50,7 @@ public class BoardController {
 
             fieldErrors.forEach((error) -> log.error("field: {}, error : {}", error.getField(), error.getDefaultMessage()));
 
-            return "/board/boardForm";
+            return "/board/createBoardForm";
         }
 
         Board board = new Board();
@@ -76,4 +78,23 @@ public class BoardController {
         return "/board/board";
     }
 
+    @GetMapping("/{boardId}/edit")
+    public String editBoardForm(@PathVariable("boardId") Long boardId, Model model) {
+        Board board = boardService.findBoard(boardId);
+        BoardDto editBoardDto = BoardDto.convertToBoardDto(board);
+
+        model.addAttribute("editBoardDto", editBoardDto);
+
+        return "/board/editBoardForm";
+    }
+
+
+    @DeleteMapping("/boards/{boardId}/delete")
+    public String deleteBoard(@PathVariable("boardId") Long boardId, HttpEntity<String> entity) {
+        log.info("body - {}", entity.getBody());
+
+        boardService.deleteBoard(boardId);
+
+        return "redirect:/boards";
+    }
 }
