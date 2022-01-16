@@ -14,7 +14,7 @@
         </div>
 
         <div class="form-floating">
-            <textarea class="form-control" placeholder="내용" id="content" th:field="*{content}" th:classappend="${#fields.hasErrors('content')} ? 'is-invalid'" style="height: 400px">
+            <textarea class="form-control" placeholder="내용" id="content" th:field="*{content}" th:classappend="${#fields.hasErrors('content')} ? 'is-invalid'" style="height: 300px" th:oninput="|handleContentArea(this)|">
             </textarea>
             <span class="content-length">(0 / 300)</span>
             <label for="content">내용</label>
@@ -30,8 +30,6 @@
             </button>
         </div>
     </form>
-
-
 
     <div id="back" class="none">
     <div class="modal" tabindex="-1">
@@ -70,6 +68,14 @@
     const modal = document.querySelector(".modal");
     const buttons = modal.querySelectorAll("button");
 
+    function handleContentArea(element) {
+        let contentLength = String(element.value).length;
+
+        contentLength = handleModal(contentLength);
+
+        displayLength(contentLength);
+    }
+
     buttons.forEach((element) => {
         element.addEventListener("click", modalOff);
     })
@@ -100,18 +106,6 @@
     function displayLength(length) {
         contentLength.innerText = `(${length} / 300)`;
     }
-
-    function handleContentLength() {
-        let contentLength = String(contentArea.value).length;
-
-        contentLength = handleModal(contentLength);
-
-        displayLength(contentLength);
-    }
-
-    window.addEventListener("keydown", (e) => {
-        setTimeout(handleContentLength, 10);
-    });
 </script>
 </body>
 </html>
