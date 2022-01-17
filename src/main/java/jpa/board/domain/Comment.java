@@ -22,6 +22,6 @@ public class Comment {
     private Long id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "board_id")
+    @JoinColumn(name = "BOARD_ID")
     private Board board;
 }

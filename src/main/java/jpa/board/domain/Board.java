@@ -25,7 +25,7 @@ public class Board extends TimeEntity {
     private Long id;
     private String title;
     private String content;
-    private Long recommendation;
+    private Long likes;
 
     @BatchSize(size = 200)
     @OneToMany(mappedBy = "board")

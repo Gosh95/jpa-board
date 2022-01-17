@@ -5,28 +5,28 @@
 <nav th:replace="~{/fragments/fragmentNavigator :: nav}" />
 
 <main class="container">
-    <div th:replace="~{/fragments/fragmentTitle :: title ('글쓰기')}"></div>
+    <div th:replace="~{/fragments/fragmentTitle :: title (|#{main.write.title}|)}"></div>
     <form th:action="@{/boards/new-board}" th:method="'post'" th:object="${boardDto}">
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="title" th:field="*{title}" placeholder="제목" th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'" maxlength="30"/>
-            <label for="title">제목</label>
-            <span th:if="${#fields.hasErrors('title')}" class="error-message" th:text="|'💣' ${#fields.errors('title').get(0)}|"></span>
+            <input type="text" class="form-control" id="title" th:field="*{title}" placeholder="title" th:placeholder="#{boards.title}" th:errorclass="is-invalid" maxlength="30"/>
+            <label for="title" th:text="#{boards.title}">title</label>
+            <span th:if="${#fields.hasErrors('title')}" th:class="'error-message'" th:text="${#fields.errors('title').get(0)}"></span>
         </div>
 
         <div class="form-floating">
-            <textarea class="form-control" placeholder="내용" id="content" th:field="*{content}" th:classappend="${#fields.hasErrors('content')} ? 'is-invalid'" style="height: 300px" th:oninput="|handleContentArea(this)|">
+            <textarea class="form-control" placeholder="content" th:placeholder="#{boards.content}" id="content" th:field="*{content}" th:errorclass="is-invalid" style="height: 300px" th:oninput="|handleContentArea(this)|">
             </textarea>
-            <span class="content-length">(0 / 300)</span>
-            <label for="content">내용</label>
-            <span th:if="${#fields.hasErrors('content')}" class="error-message" th:text="|'💣' ${#fields.errors('content').get(0)}|"></span>
+            <span class="content-length" th:text="|(0 / 300)|">#</span>
+            <label for="content" th:text="#{boards.content}">content</label>
         </div>
+        <span th:if="${#fields.hasErrors('content')}" th:class="'error-message'" th:text="${#fields.errors('content').get(0)}"></span>
 
         <div class="write-btn">
             <button type="submit" class="btn btn-dark">
-                <span>확인</span>
+                <span th:text="#{confirm.button}">confirm</span>
             </button>
             <button th:onclick="|location.href='@{/boards}'|" type="button" class="btn btn-dark">
-                <span>취소</span>
+                <span th:text="#{cancel.button}">cancel</span>
             </button>
         </div>
     </form>
@@ -36,14 +36,14 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">💣 알림</h5>
+                    <h5 class="modal-title" th:text="#{modal.notification}">notification</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>길이가 300자를 초과하였습니다.</p>
+                    <p th:text="#{modal.error.message}">error-message</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">확인</button>
+                    <button type="button" class="btn btn-primary" th:text="#{confirm.button}">confirm</button>
                 </div>
             </div>
         </div>

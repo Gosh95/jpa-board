@@ -18,8 +18,12 @@ spring:
   jackson:
     property-naming-strategy: SNAKE_CASE
 
+  messages:
+    basename: messages, errors
+
 server:
   port: 3030
+
 
 logging:
   level:

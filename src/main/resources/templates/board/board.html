@@ -5,7 +5,7 @@
 <nav th:replace="~{/fragments/fragmentNavigator :: nav}" />
 
 <main class="container">
-  <div th:replace="~{/fragments/fragmentTitle :: title ('게시글')}"></div>
+  <div th:replace="~{/fragments/fragmentTitle :: title (|#{main.post.title}|)}"></div>
     <div class="form-floating mb-3">
       <div class="form-control" th:text="${board.title}"></div>
     </div>
@@ -17,16 +17,16 @@
   <div class="space"></div>
 
   <div class="form-floating">
-    <textarea class="form-control" placeholder="댓글" id="floatingTextarea"></textarea>
-    <label for="floatingTextarea">댓글</label>
+    <textarea class="form-control" th:placeholder="#{comment}" id="floatingTextarea"></textarea>
+    <label for="floatingTextarea" th:text="#{comment}">comment</label>
   </div>
 
   <div class="write-btn">
     <button th:onclick="|location.href='@{/boards/{boardId}/edit (boardId =${board.id})}'|" type="button" class="btn btn-dark btn-edit">
-      <span>수정</span>
+      <span th:text="#{edit.button}">edit</span>
     </button>
     <button th:onclick="" type="button" class="btn btn-dark btn-delete">
-      <span>삭제</span>
+      <span th:text="#{delete.button}">delete</span>
     </button>
   </div>
 </main>

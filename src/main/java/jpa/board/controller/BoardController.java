@@ -12,11 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -46,9 +45,9 @@ public class BoardController {
     @PostMapping("/new-board")
     public String createBoard(@Valid @ModelAttribute BoardDto boardDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if(bindingResult.hasFieldErrors()) {
-            List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+            List<ObjectError> allErrors = bindingResult.getAllErrors();
 
-            fieldErrors.forEach((error) -> log.error("field: {}, error : {}", error.getField(), error.getDefaultMessage()));
+            allErrors.forEach((error) -> log.error("Error Arguments : {}, Error Message : {}", error.getArguments(), error.getDefaultMessage()));
 
             return "/board/createBoardForm";
         }
@@ -88,7 +87,6 @@ public class BoardController {
         return "/board/editBoardForm";
     }
 
-
     @DeleteMapping("/boards/{boardId}/delete")
     public String deleteBoard(@PathVariable("boardId") Long boardId, HttpEntity<String> entity) {
         log.info("body - {}", entity.getBody());
@@ -96,5 +94,11 @@ public class BoardController {
         boardService.deleteBoard(boardId);
 
         return "redirect:/boards";
+    }
+
+    @GetMapping("/best-board")
+    public String bestBoard() {
+
+        return "/board/bestBoard";
     }
 }

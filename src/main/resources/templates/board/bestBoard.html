@@ -1,11 +1,13 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{/fragments/fragmentHeader :: header ('⭐게시판')}" />
+<head th:replace="~{/fragments/fragmentHeader :: header ('⭐인기글')}" />
 <body>
 <nav th:replace="~{/fragments/fragmentNavigator :: nav}" />
 
 <main class="container">
-  <div th:replace="~{/fragments/fragmentTitle :: title (|#{main.boards.title}|)}"></div>
+  <div th:replace="~{/fragments/fragmentTitle :: title (|#{main.best.title}|)}">
+  </div>
+
   <table class="table">
     <thead>
     <tr>
@@ -17,23 +19,15 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="board : ${boards}">
-      <th scope="row" th:text="${board.id}">1</th>
-      <td th:onclick="|location.href='@{/boards/{boardId} (boardId = ${board.id})}'|" th:text="${board.title}" th:class="'pointer'">Mark</td>
-      <td th:text="${null}">@mdo</td>
-      <td th:text="${#temporals.format(board.createdAt, 'yy.MM.dd HH:mm')}">Otto</td>
-      <td th:text="${null}">@mdo</td>
-    </tr>
+<!--    <tr th:each="board : ${boards}">-->
+<!--      <th scope="row" th:text="${board.id}">1</th>-->
+<!--      <td th:onclick="|location.href='@{/boards/{boardId} (boardId = ${board.id})}'|" th:text="${board.title}" th:class="'pointer'">Mark</td>-->
+<!--      <td th:text="${null}">@mdo</td>-->
+<!--      <td th:text="${#temporals.format(board.createdAt, 'yy.MM.dd HH:mm')}">Otto</td>-->
+<!--      <td th:text="${null}">@mdo</td>-->
+<!--    </tr>-->
     </tbody>
-
   </table>
-
-  <div class="write-btn">
-    <button th:onclick="|location.href='@{/boards/new-board}'|" type="button" class="btn btn-dark">
-      <span><i class="fas fa-pencil-alt"></i></span>
-      <span th:text="#{write.button}"></span>
-    </button>
-  </div>
 </main>
 
 <!-- Optional JavaScript; choose one of the two! -->
