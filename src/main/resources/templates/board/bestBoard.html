@@ -1,6 +1,8 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{/fragments/fragmentHeader :: header ('⭐인기글')}" />
+<head th:replace="~{/fragments/fragmentHeader :: header (~{::title})}">
+  <title th:text="#{bestBoard.title}"></title>
+</head>
 <body>
 <nav th:replace="~{/fragments/fragmentNavigator :: nav}" />
 

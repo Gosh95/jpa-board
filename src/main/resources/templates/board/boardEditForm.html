@@ -1,32 +1,34 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{/fragments/fragmentHeader :: header ('⭐글수정')}" />
+<head th:replace="~{/fragments/fragmentHeader :: header (~{::title})}">
+  <title th:text="#{boardEditForm.title}"></title>
+</head>
 <body>
 <nav th:replace="~{/fragments/fragmentNavigator :: nav}" />
 
 <main class="container">
   <div th:replace="~{/fragments/fragmentTitle :: title (|#{main.edit.title}|)}"></div>
-  <form th:action="@{#}"  th:object="${editBoardDto}">
+  <form th:action="@{#}"  th:object="${boardEditDto}">
     <div class="form-floating mb-3">
-      <input type="text" class="form-control" id="title" th:field="*{title}" placeholder="제목" th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'" maxlength="30" />
-      <label for="title">제목</label>
+      <input type="text" class="form-control" id="title" th:field="*{title}" placeholder="제목" th:placeholder="#{boards.title}" th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'" maxlength="30" />
+      <label for="title" th:text="#{boards.title}">/</label>
       <span th:if="${#fields.hasErrors('title')}" class="error-message" th:text="|'💣' ${#fields.errors('title').get(0)}|"></span>
     </div>
 
     <div class="form-floating">
-            <textarea class="form-control" placeholder="내용" id="content" th:field="*{content}" th:classappend="${#fields.hasErrors('content')} ? 'is-invalid'" style="height: 400px">
+            <textarea class="form-control" th:placeholder="#{boards.content}" id="content" th:field="*{content}" th:classappend="${#fields.hasErrors('content')} ? 'is-invalid'" style="height: 300px">
             </textarea>
-      <span class="content-length" th:text="|(${editBoardDto.content.length()} / 300)|">(0 / 300)</span>
-      <label for="content">내용</label>
+      <span class="content-length" th:text="|(${boardEditDto.content.length()} / 300)|">(0 / 300)</span>
+      <label for="content" th:text="#{boards.content}">/</label>
       <span th:if="${#fields.hasErrors('content')}" class="error-message" th:text="|'💣' ${#fields.errors('content').get(0)}|"></span>
     </div>
 
     <div class="write-btn">
       <button type="submit" class="btn btn-dark">
-        <span>확인</span>
+        <span th:text="#{confirm.button}">confirm</span>
       </button>
       <button th:onclick="|location.href='@{/boards}'|" type="button" class="btn btn-dark">
-        <span>취소</span>
+        <span th:text="#{cancel.button}">cancel</span>
       </button>
     </div>
   </form>

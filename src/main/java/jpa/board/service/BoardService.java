@@ -1,6 +1,8 @@
 package jpa.board.service;
 
 import jpa.board.domain.Board;
+import jpa.board.domain.dto.BoardEditDto;
+import jpa.board.exception.DuplicatedException;
 import jpa.board.exception.NotExistException;
 import jpa.board.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,27 +18,35 @@ import java.util.Optional;
 public class BoardService {
     private final BoardRepository boardRepository;
 
-    public Long upload(Board board) {
-        boardRepository.save(board);
+    public Long createBoard(Board board) {
+        Board newBoard = checkBoard(board);
+
+        boardRepository.save(newBoard);
 
         return board.getId();
     }
 
     @Transactional(readOnly = true)
-    public Board findBoard(Long id) throws NotExistException {
-        Optional<Board> findBoard = boardRepository.findById(id);
+    public Board findBoard(Long id) {
+        Optional<Board> board = boardRepository.findBoardById(id);
 
-        return findBoard.orElseThrow(() -> new NotExistException("존재하지 않는 게시글입니다."));
+        return board.orElseThrow(() -> new NotExistException("존재하지 않는 게시글 입니다."));
     }
 
-    private List<Board> verifyBoard(Long id) throws NotExistException {
-        List<Board> boards = boardRepository.findBoardsById(id);
+    private Board checkBoard(Board board) throws DuplicatedException{
+        List<Board> boards = boardRepository.findBoardsById(board.getId());
 
-        if(boards.isEmpty()) {
-            throw new NotExistException("존재하지 않는 게시글입니다.");
+        if(!boards.isEmpty()) {
+            throw new DuplicatedException("중복되는 게시글이 존재합니다.");
         }
 
-        return boards;
+        return board;
+    }
+
+    public Board editBoard(BoardEditDto boardEditDto) {
+        Board board = findBoard(boardEditDto.getId());
+
+        return board.editBoard(boardEditDto);
     }
 
     @Transactional(readOnly = true)

@@ -1,23 +1,23 @@
 package jpa.board.exception;
 
-public class NotExistException extends RuntimeException{
-    public NotExistException() {
+public class DuplicatedException extends RuntimeException{
+    public DuplicatedException() {
         super();
     }
 
-    public NotExistException(String message) {
+    public DuplicatedException(String message) {
         super(message);
     }
 
-    public NotExistException(String message, Throwable cause) {
+    public DuplicatedException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public NotExistException(Throwable cause) {
+    public DuplicatedException(Throwable cause) {
         super(cause);
     }
 
-    protected NotExistException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    protected DuplicatedException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 

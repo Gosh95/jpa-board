@@ -1,9 +1,9 @@
 package jpa.board.controller;
 
 import jpa.board.domain.Board;
-import jpa.board.dto.BoardDto;
+import jpa.board.domain.dto.BoardCreateDto;
+import jpa.board.domain.dto.BoardEditDto;
 import jpa.board.exception.NotExistException;
-import jpa.board.repository.BoardRepository;
 import jpa.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +11,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -37,25 +36,25 @@ public class BoardController {
 
     @GetMapping("/new-board")
     public String createBoardForm(Model model) {
-        model.addAttribute("boardDto", new BoardDto());
+        model.addAttribute("boardCreateDto", new BoardCreateDto());
 
-        return "/board/createBoardForm";
+        return "/board/boardCreateForm";
     }
 
     @PostMapping("/new-board")
-    public String createBoard(@Valid @ModelAttribute BoardDto boardDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String createBoard(@Valid @ModelAttribute BoardCreateDto boardCreateDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if(bindingResult.hasFieldErrors()) {
             List<ObjectError> allErrors = bindingResult.getAllErrors();
 
             allErrors.forEach((error) -> log.error("Error Arguments : {}, Error Message : {}", error.getArguments(), error.getDefaultMessage()));
 
-            return "/board/createBoardForm";
+            return "/board/boardCreateForm";
         }
 
         Board board = new Board();
-        Board newBoard = board.createBoard(boardDto);
+        Board newBoard = board.createBoard(boardCreateDto);
 
-        Long boardId = boardService.upload(newBoard);
+        Long boardId = boardService.createBoard(newBoard);
 
         redirectAttributes.addAttribute("boardId", boardId);
 
@@ -80,11 +79,11 @@ public class BoardController {
     @GetMapping("/{boardId}/edit")
     public String editBoardForm(@PathVariable("boardId") Long boardId, Model model) {
         Board board = boardService.findBoard(boardId);
-        BoardDto editBoardDto = BoardDto.convertToBoardDto(board);
+        BoardEditDto boardEditDto = BoardEditDto.convertToBoardEditDto(board);
 
-        model.addAttribute("editBoardDto", editBoardDto);
+        model.addAttribute("boardEditDto", boardEditDto);
 
-        return "/board/editBoardForm";
+        return "/board/boardEditForm";
     }
 
     @DeleteMapping("/boards/{boardId}/delete")

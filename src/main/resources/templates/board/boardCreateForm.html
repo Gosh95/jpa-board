@@ -1,12 +1,14 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{/fragments/fragmentHeader :: header ('⭐글쓰기')}" />
+<head th:replace="~{/fragments/fragmentHeader :: header (~{::title})}">
+    <title th:text="#{boardCreateForm.title}"></title>
+</head>
 <body>
 <nav th:replace="~{/fragments/fragmentNavigator :: nav}" />
 
 <main class="container">
     <div th:replace="~{/fragments/fragmentTitle :: title (|#{main.write.title}|)}"></div>
-    <form th:action="@{/boards/new-board}" th:method="'post'" th:object="${boardDto}">
+    <form th:action="@{/boards/new-board}" th:method="'post'" th:object="${boardCreateDto}">
         <div class="form-floating mb-3">
             <input type="text" class="form-control" id="title" th:field="*{title}" placeholder="title" th:placeholder="#{boards.title}" th:errorclass="is-invalid" maxlength="30"/>
             <label for="title" th:text="#{boards.title}">title</label>
