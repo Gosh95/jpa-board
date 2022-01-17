@@ -58,7 +58,8 @@
 
 .btn-dark:hover {
     opacity: 80%;
-    transform: scale(0.9);
+    transform: scale(0.95);
+    transition: 0.1s ease-in-out;
 }
 
 .form-error {
