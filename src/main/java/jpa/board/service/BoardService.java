@@ -6,6 +6,10 @@ import jpa.board.exception.DuplicatedException;
 import jpa.board.exception.NotExistException;
 import jpa.board.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,8 +54,10 @@ public class BoardService {
     }
 
     @Transactional(readOnly = true)
-    public List<Board> findAllBoard() {
-        return boardRepository.findAll();
+    public Page<Board> findAllBoard(Pageable pageable) {
+        pageable = PageRequest.of(pageable.getPageNumber(), 15);
+
+        return boardRepository.findAll(pageable);
     }
 
     public void deleteBoard(Long id) {

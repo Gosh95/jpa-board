@@ -4,9 +4,13 @@ import jpa.board.domain.Board;
 import jpa.board.domain.dto.BoardCreateDto;
 import jpa.board.domain.dto.BoardEditDto;
 import jpa.board.exception.NotExistException;
+import jpa.board.repository.BoardRepository;
 import jpa.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,13 +27,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class BoardController {
-//    private final BoardRepository boardRepository;
+    private final BoardRepository boardRepository;
     private final BoardService boardService;
 
     @GetMapping
-    public String boards(Model model) {
-        List<Board> boards = boardService.findAllBoard();
-        model.addAttribute("boards", boards);
+    public String boards(Model model, Pageable pageable) {
+        Page<Board> boardList = boardService.findAllBoard(pageable);
+        model.addAttribute("boardList", boardList);
 
         return "/board/boardList";
     }
@@ -85,6 +89,8 @@ public class BoardController {
 
         return "/board/boardEditForm";
     }
+
+//    @PatchMapping("/{boardId}/edit")
 
     @DeleteMapping("/boards/{boardId}/delete")
     public String deleteBoard(@PathVariable("boardId") Long boardId, HttpEntity<String> entity) {

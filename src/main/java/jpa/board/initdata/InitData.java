@@ -27,7 +27,7 @@ public class InitData {
         private final EntityManager em;
 
         public void init() {
-            for(int i = 0; i < 15; i++) {
+            for(int i = 0; i < 40; i++) {
                 em.persist(Board.builder().title("title" + i).content("content" + i).build());
             }
         }

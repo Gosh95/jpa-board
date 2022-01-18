@@ -19,16 +19,27 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="board : ${boards}" th:style="${boardStat.even} ? 'background-color: #ecf0f1'">
+    <tr th:each="board : ${boardList}" th:style="${boardStat.even} ? 'background-color: #ecf0f1'">
       <th scope="row" th:text="${board.id}">1</th>
-      <td th:onclick="|location.href='@{/boards/{boardId} (boardId = ${board.id})}'|" th:text="${board.title}" th:class="'pointer'">Mark</td>
+      <td th:onclick="|location.href='@{/boards/{boardId} (boardId=${board.id})}'|" th:text="${board.title}" th:class="'pointer'">Mark</td>
       <td th:text="${null}">@mdo</td>
       <td th:text="${#temporals.format(board.createdAt, 'yy.MM.dd HH:mm')}">Otto</td>
       <td th:text="${null}">@mdo</td>
     </tr>
     </tbody>
-
   </table>
+
+  <ul class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+    <li class="btn-group me-2" role="group" aria-label="First group">
+      <button type="button" class="btn btn-primary"><</button>
+    </li>
+    <li class="btn-group me-2" role="group" aria-label="Second group" th:each="page : ${boardList.totalPages}">
+      <button type="button" class="btn btn-secondary" th:text="${page}"></button>
+    </li>
+    <li class="btn-group" role="group" aria-label="Third group">
+      <button type="button" class="btn btn-info">></button>
+    </li>
+  </ul>
 
   <div class="write-btn">
     <button th:onclick="|location.href='@{/boards/new-board}'|" type="button" class="btn btn-dark">
