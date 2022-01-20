@@ -8,11 +8,11 @@
 
 <main class="container">
   <div th:replace="~{/fragments/fragmentTitle :: title (|#{edit.main.title}|)}"></div>
-  <form th:action="@{#}"  th:object="${boardEditDto}">
+  <form th:action="@{/boards/{boardId}/edit (boardId=${boardEditDto.id})}" method="post" th:object="${boardEditDto}">
     <div class="form-floating mb-3">
       <input type="text" class="form-control" id="title" th:field="*{title}" placeholder="제목" th:placeholder="#{boards.title}" th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'" maxlength="30" />
       <label for="title" th:text="#{boards.title}">/</label>
-      <span th:if="${#fields.hasErrors('title')}" class="error-message" th:text="|'💣' ${#fields.errors('title').get(0)}|"></span>
+      <span th:if="${#fields.hasErrors('title')}" class="error-message" th:errors="*{title}"></span>
     </div>
 
     <div class="form-floating">
@@ -20,20 +20,18 @@
             </textarea>
       <span class="content-length" th:text="|(${boardEditDto.content.length()} / 300)|">(0 / 300)</span>
       <label for="content" th:text="#{boards.content}">/</label>
-      <span th:if="${#fields.hasErrors('content')}" class="error-message" th:text="|'💣' ${#fields.errors('content').get(0)}|"></span>
+      <span th:if="${#fields.hasErrors('content')}" class="error-message" th:errors="*{content}"></span>
     </div>
 
     <div class="write-btn">
       <button type="submit" class="btn btn-dark">
         <span th:text="#{confirm.button}">confirm</span>
       </button>
-      <button th:onclick="|location.href='@{/boards}'|" type="button" class="btn btn-dark">
+      <button th:onclick="|location.href='@{/boards/{boardId} (boardId=${boardEditDto.id})}'|" type="button" class="btn btn-dark">
         <span th:text="#{cancel.button}">cancel</span>
       </button>
     </div>
   </form>
-
-
 
   <div id="back" class="none">
     <div class="modal" tabindex="-1">

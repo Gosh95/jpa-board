@@ -13,13 +13,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -57,9 +61,7 @@ public class BoardController {
     @PostMapping("/new-board")
     public String createBoard(@Valid @ModelAttribute BoardCreateDto boardCreateDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if(bindingResult.hasFieldErrors()) {
-
             List<ObjectError> allErrors = bindingResult.getAllErrors();
-
             allErrors.forEach((error) -> log.error("Error Arguments : {}, Error Message : {}", error.getArguments(), error.getDefaultMessage()));
 
             return "/board/boardCreateForm";
@@ -84,8 +86,8 @@ public class BoardController {
             model.addAttribute("board", findBoard);
         } catch (NotExistException e) {
             e.printStackTrace();
-        } catch (Exception exception) {
-            exception.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return "/board/board";
@@ -93,6 +95,8 @@ public class BoardController {
 
     @GetMapping("/{boardId}/edit")
     public String editBoardForm(@PathVariable("boardId") Long boardId, Model model) {
+        log.info("edit boardId : {}", boardId);
+
         Board board = boardService.findBoard(boardId);
         BoardEditDto boardEditDto = BoardEditDto.convertToBoardEditDto(board);
 
@@ -101,11 +105,22 @@ public class BoardController {
         return "/board/boardEditForm";
     }
 
-//    @PatchMapping("/{boardId}/edit")
+    @PostMapping("/{boardId}/edit")
+    public String editBoard(@PathVariable("boardId") Long boardId, @Validated @ModelAttribute("boardEditDto") BoardEditDto boardEditDto, BindingResult bindingResult) {
+        if(bindingResult.hasFieldErrors()) {
+            List<ObjectError> allErrors = bindingResult.getAllErrors();
+            allErrors.forEach((error) -> log.error("Error Arguments : {}, Error Message : {}", error.getArguments(), error.getDefaultMessage()));
 
-    @DeleteMapping("/boards/{boardId}/delete")
-    public String deleteBoard(@PathVariable("boardId") Long boardId, HttpEntity<String> entity) {
-        log.info("body - {}", entity.getBody());
+            return "/board/boardEditForm";
+        }
+        boardService.editBoard(boardId, boardEditDto);
+
+        return "redirect:/boards/{boardId}";
+    }
+
+    @PostMapping("/{boardId}/delete")
+    public String deleteBoard(@PathVariable("boardId") Long boardId) {
+        log.info("delete id : {}", boardId);
 
         boardService.deleteBoard(boardId);
 

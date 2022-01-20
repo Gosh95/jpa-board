@@ -12,7 +12,7 @@
         <div class="form-floating mb-3">
             <input type="text" class="form-control" id="title" th:field="*{title}" placeholder="title" th:placeholder="#{boards.title}" th:errorclass="is-invalid" maxlength="30"/>
             <label for="title" th:text="#{boards.title}">title</label>
-            <span th:if="${#fields.hasErrors('title')}" th:class="'error-message'" th:text="${#fields.errors('title').get(0)}"></span>
+            <span th:if="${#fields.hasErrors('title')}" th:class="'error-message'" th:errors="*{title}"></span>
         </div>
 
         <div class="form-floating">
@@ -21,7 +21,7 @@
             <span class="content-length" th:text="|(0 / 300)|">#</span>
             <label for="content" th:text="#{boards.content}">content</label>
         </div>
-        <span th:if="${#fields.hasErrors('content')}" th:class="'error-message'" th:text="${#fields.errors('content').get(0)}"></span>
+        <span th:if="${#fields.hasErrors('content')}" th:class="'error-message'" th:errors="*{content}"></span>
 
         <div class="write-btn">
             <button type="submit" class="btn btn-dark">

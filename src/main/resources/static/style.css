@@ -83,8 +83,10 @@
     font-size: 10px;
 }
 
-a:link {
+.home-btn {
+    width: 10rem;
 }
 
-a:visited {
+.optional {
+    font-size: 12px;
 }

@@ -22,12 +22,10 @@ import lombok.Builder;
 @AllArgsConstructor
 @Builder
 public class BoardCreateDto {
-    @NotEmpty
     @NotBlank
     @Size(min=2)
     private String title;
 
-    @NotEmpty
     @NotBlank
     @Size(min=4)
     private String content;

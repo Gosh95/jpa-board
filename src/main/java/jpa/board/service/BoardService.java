@@ -6,18 +6,17 @@ import jpa.board.exception.DuplicatedException;
 import jpa.board.exception.NotExistException;
 import jpa.board.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 @Transactional
 public class BoardService {
@@ -48,10 +47,9 @@ public class BoardService {
         return board;
     }
 
-    public Board editBoard(BoardEditDto boardEditDto) {
-        Board board = findBoard(boardEditDto.getId());
-
-        return board.editBoard(boardEditDto);
+    public void editBoard(Long id, BoardEditDto boardEditDto) {
+        Board board = findBoard(id);
+        board.editBoard(boardEditDto);
     }
 
     @Transactional(readOnly = true)
@@ -60,12 +58,10 @@ public class BoardService {
     }
 
     public void deleteBoard(Long id) {
-        boardRepository.delete(findBoard(id));
+        boardRepository.deleteById(id);
     }
 
     public void addViews(Board board) {
         board.addViews();
     }
-
-
 }

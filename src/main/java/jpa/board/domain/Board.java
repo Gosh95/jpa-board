@@ -59,7 +59,6 @@ public class Board extends TimeEntity {
     }
 
     public Board editBoard(BoardEditDto boardEditDto) {
-        this.id = boardEditDto.getId();
         this.title = boardEditDto.getTitle();
         this.content = boardEditDto.getContent();
 

@@ -26,8 +26,12 @@ spring:
       pageable:
         default-page-size: 12
 
+
 server:
   port: 3030
+  error:
+    whitelabel:
+      enabled: false
 
 
 logging:
