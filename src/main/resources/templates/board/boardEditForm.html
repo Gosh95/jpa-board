@@ -7,7 +7,7 @@
 <nav th:replace="~{/fragments/fragmentNavigator :: nav}" />
 
 <main class="container">
-  <div th:replace="~{/fragments/fragmentTitle :: title (|#{main.edit.title}|)}"></div>
+  <div th:replace="~{/fragments/fragmentTitle :: title (|#{edit.main.title}|)}"></div>
   <form th:action="@{#}"  th:object="${boardEditDto}">
     <div class="form-floating mb-3">
       <input type="text" class="form-control" id="title" th:field="*{title}" placeholder="제목" th:placeholder="#{boards.title}" th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'" maxlength="30" />

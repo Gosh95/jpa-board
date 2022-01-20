@@ -20,8 +20,15 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class Comment {
     @Id @GeneratedValue(strategy = IDENTITY)
     private Long id;
+    private String writer;
+    private String content;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "BOARD_ID")
     private Board board;
+
+    public void addComment(Board board) {
+        this.board = board;
+        this.board.getComments().add(this);
+    }
 }

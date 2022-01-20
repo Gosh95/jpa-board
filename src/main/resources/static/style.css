@@ -47,6 +47,10 @@
     display: none;
 }
 
+.hidden {
+    visibility: hidden;
+}
+
 .visible {
     visibility: visible;
 }
@@ -77,4 +81,10 @@
 
 .search-btn {
     font-size: 10px;
+}
+
+a:link {
+}
+
+a:visited {
 }

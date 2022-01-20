@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.List;
 import java.util.Optional;
@@ -55,12 +56,16 @@ public class BoardService {
 
     @Transactional(readOnly = true)
     public Page<Board> findAllBoard(Pageable pageable) {
-        pageable = PageRequest.of(pageable.getPageNumber(), 15);
-
         return boardRepository.findAll(pageable);
     }
 
     public void deleteBoard(Long id) {
         boardRepository.delete(findBoard(id));
     }
+
+    public void addViews(Board board) {
+        board.addViews();
+    }
+
+
 }

@@ -7,7 +7,7 @@
 <nav th:replace="~{/fragments/fragmentNavigator :: nav}" />
 
 <main class="container">
-  <div th:replace="~{/fragments/fragmentTitle :: title (|#{main.boards.title}|)}"></div>
+  <div th:replace="~{/fragments/fragmentTitle :: title (|#{board.main.title}|)}"></div>
   <table class="table">
     <thead>
     <tr>
@@ -15,31 +15,44 @@
       <th scope="col" th:text="#{boards.title}">title</th>
       <th scope="col" th:text="#{boards.writer}">writer</th>
       <th scope="col" th:text="#{boards.date}">date</th>
-      <th scope="col" th:text="#{boards.likes}">likes</th>
+      <th scope="col" th:text="#{boards.views}">views</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="board : ${boardList}" th:style="${boardStat.even} ? 'background-color: #ecf0f1'">
       <th scope="row" th:text="${board.id}">1</th>
       <td th:onclick="|location.href='@{/boards/{boardId} (boardId=${board.id})}'|" th:text="${board.title}" th:class="'pointer'">Mark</td>
-      <td th:text="${null}">@mdo</td>
-      <td th:text="${#temporals.format(board.createdAt, 'yy.MM.dd HH:mm')}">Otto</td>
-      <td th:text="${null}">@mdo</td>
+      <td th:text="${board.member}">@mdo</td>
+      <td th:text="${{board.createdAt}}">Otto</td>
+      <td th:text="${board.views}">@mdo</td>
     </tr>
     </tbody>
   </table>
 
-  <ul class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-    <li class="btn-group me-2" role="group" aria-label="First group">
-      <button type="button" class="btn btn-primary"><</button>
-    </li>
-    <li class="btn-group me-2" role="group" aria-label="Second group" th:each="page : ${boardList.totalPages}">
-      <button type="button" class="btn btn-secondary" th:text="${page}"></button>
-    </li>
-    <li class="btn-group" role="group" aria-label="Third group">
-      <button type="button" class="btn btn-info">></button>
-    </li>
-  </ul>
+  <nav aria-label="Page navigation example"
+       th:with="first = ${T(Math).floor(boardList.number/10) * 10 + 1},
+                last = (${first + 9 > boardList.getTotalPages() ? boardList.getTotalPages() : first + 9}),
+                getNumber = ${boardList.number}, totalPage = ${boardList.getTotalPages() - 1}">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" th:classappend="${boardList.first} ? 'disabled'">
+        <a class="page-link" th:href="@{/boards(page=0)}" th:text="${'<<'}"></a>
+      </li>
+      <li class="page-item" th:classappend="${boardList.first} ? 'none'" th:with="prev=${T(Math).abs(getNumber / 10) * 10 - 1}">
+        <a class="page-link" th:href="@{/boards(page=${prev > 0 ? prev : 0})}" th:text="${'<'}"></a>
+      </li>
+      <th:block th:each="pageNum : ${#numbers.sequence(first, last)}">
+        <li class="page-item" th:classappend="${getNumber == pageNum - 1} ? 'disabled'">
+          <a class="page-link" th:href="@{/boards(page=${pageNum - 1})}" th:text="${pageNum}">1</a></li>
+        <li class="page-item">
+      </th:block>
+      <li class="page-item" th:classappend="${boardList.last} ? 'none'" th:with="next=${T(Math).abs(getNumber / 10) * 10 + 10}">
+        <a class="page-link" th:href="@{/boards(page=${next > totalPage ? totalPage : next})}" th:text="${'>'}"></a>
+      </li>
+      <li class="page-item" th:classappend="${boardList.last} ? 'disabled'">
+        <a class="page-link" th:href="@{/boards(page=${totalPage})}" th:text="${'>>'}"></a>
+      </li>
+    </ul>
+  </nav>
 
   <div class="write-btn">
     <button th:onclick="|location.href='@{/boards/new-board}'|" type="button" class="btn btn-dark">

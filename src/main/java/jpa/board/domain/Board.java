@@ -14,6 +14,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Getter @Setter
@@ -27,14 +28,32 @@ public class Board extends TimeEntity {
     private String title;
     private String content;
     private Long likes;
+    private Long views;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
 
     @BatchSize(size = 200)
     @OneToMany(mappedBy = "board")
     private List<Comment> comments = new ArrayList<>();
 
+    public void addBoard(Member member) {
+        this.member = member;
+        this.member.getBoards().add(this);
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.likes = 0L;
+        this.views = 0L;
+    }
+
     public Board createBoard(BoardCreateDto boardCreateDto) {
         this.title = boardCreateDto.getTitle();
         this.content = boardCreateDto.getContent();
+        this.likes = 0L;
+        this.views = 0L;
 
         return this;
     }
@@ -47,4 +66,11 @@ public class Board extends TimeEntity {
         return this;
     }
 
+    public void addViews() {
+        this.views++;
+    }
+
+    public void addLikes() {
+        this.likes++;
+    }
 }

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.util.List;
 
+import static org.springframework.data.domain.Sort.Direction.DESC;
+
 @Controller
 @RequestMapping("/boards")
 @RequiredArgsConstructor
@@ -30,9 +33,15 @@ public class BoardController {
     private final BoardRepository boardRepository;
     private final BoardService boardService;
 
+    @ModelAttribute("totalSize")
+    public Integer totalSize() {
+        return boardRepository.findAll().size();
+    }
+
     @GetMapping
-    public String boards(Model model, Pageable pageable) {
+    public String boards(Model model, @PageableDefault(size = 12, sort = "id", direction = DESC) Pageable pageable, @RequestParam(value = "property", required = false) String property) {
         Page<Board> boardList = boardService.findAllBoard(pageable);
+        log.info("page {}", boardList.getNumber());
         model.addAttribute("boardList", boardList);
 
         return "/board/boardList";
@@ -48,6 +57,7 @@ public class BoardController {
     @PostMapping("/new-board")
     public String createBoard(@Valid @ModelAttribute BoardCreateDto boardCreateDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if(bindingResult.hasFieldErrors()) {
+
             List<ObjectError> allErrors = bindingResult.getAllErrors();
 
             allErrors.forEach((error) -> log.error("Error Arguments : {}, Error Message : {}", error.getArguments(), error.getDefaultMessage()));
@@ -69,6 +79,7 @@ public class BoardController {
     public String readBoard(@PathVariable("boardId") Long boardId, Model model) {
         try {
             Board findBoard = boardService.findBoard(boardId);
+            boardService.addViews(findBoard);
 
             model.addAttribute("board", findBoard);
         } catch (NotExistException e) {

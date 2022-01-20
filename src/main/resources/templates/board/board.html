@@ -7,7 +7,19 @@
 <nav th:replace="~{/fragments/fragmentNavigator :: nav}" />
 
 <main class="container">
-  <div th:replace="~{/fragments/fragmentTitle :: title (|#{main.post.title}|)}"></div>
+  <div th:replace="~{/fragments/fragmentTitle :: title (|#{post.main.title}|)}"></div>
+  <div class="d-flex justify-content-between mb-3">
+    <div th:with="prev=${board.id - 1}" th:classappend="${prev == 0} ? 'hidden'">
+      <button class="btn btn-dark" th:onclick="|location.href='@{/boards/{boardId} (boardId = ${prev})}'|">
+        <span th:text="#{prev.board}"></span>
+      </button>
+    </div>
+    <div th:with="next=${board.id + 1}" th:classappend="${next == totalSize + 1} ? 'hidden'">
+      <button class="btn btn-dark" th:onclick="|location.href='@{/boards/{boardId} (boardId = ${next})}'|">
+        <span th:text="#{next.board}"></span>
+      </button>
+    </div>
+  </div>
   <div class="form-floating mb-3">
     <div class="form-control" th:text="${board.title}"></div>
   </div>

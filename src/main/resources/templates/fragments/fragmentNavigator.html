@@ -1,23 +1,26 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <nav th:fragment="nav" class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#" th:text="#{nav.title}">JPA BOARD</a>
+    <a class="navbar-brand" href="#" th:text="#{main}">JPA BOARD</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <ul class="navbar-nav me-auto mb-2 mb-md-0">
         <li class="nav-item">
-          <a class="nav-link" th:classappend="${#request.getServletPath() == '/'} ? 'active'" aria-current="page" href="/" th:text="#{nav.home}">Home</a>
+          <a class="nav-link" th:classappend="${#request.getServletPath() == '/'} ? 'active'" aria-current="page" href="/" th:text="#{home.main.title}">홈</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" th:classappend="${#request.getServletPath() == '/boards'} ? 'active'" th:href="@{/boards}" th:text="#{nav.board}">게시판</a>
+          <a class="nav-link" th:classappend="${#request.getServletPath() == '/members/new'} ? 'active'" aria-current="page" th:href="@{/members/new}" th:text="#{join.main.title}">회원가입</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" th:classappend="${#request.getServletPath() == '/boards/best-board'} ? 'active'" th:href="@{/boards/best-board}" th:text="#{nav.best}">인기글</a>
+          <a class="nav-link" th:classappend="${#request.getServletPath() == '/boards'} ? 'active'" th:href="@{/boards}" th:text="#{board.main.title}">게시판</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" th:classappend="${#request.getServletPath() == '/boards/new-board'} ? 'active'" th:href="@{/boards/new-board}" th:text="#{nav.write}">글쓰기</a>
+          <a class="nav-link" th:classappend="${#request.getServletPath() == '/boards/best-board'} ? 'active'" th:href="@{/boards/best-board}" th:text="#{best.main.title}">인기글</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:classappend="${#request.getServletPath() == '/boards/new-board'} ? 'active'" th:href="@{/boards/new-board}" th:text="#{write.main.title}">글쓰기</a>
         </li>
       </ul>
       <form class="d-flex">
