@@ -66,21 +66,9 @@
     transition: 0.1s ease-in-out;
 }
 
-.form-error {
-    display: none;
-}
-
 .error-message {
     color: #f41c1c;
     font-weight: 600;
-}
-
-.space {
-    margin-bottom: 20px;
-}
-
-.search-btn {
-    font-size: 10px;
 }
 
 .home-btn {
@@ -89,4 +77,21 @@
 
 .optional {
     font-size: 12px;
+}
+
+.content {
+    word-wrap: break-word;
+}
+
+.comment-btn {
+    border: none;
+    background-color: #0d6efd;
+    cursor: pointer;
+    text-align: center;
+    width: 100px;
+    color: white;
+}
+
+.comment-btn:hover {
+    opacity: 70
 }

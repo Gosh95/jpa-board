@@ -26,6 +26,7 @@ public class Board extends TimeEntity {
     @Id @GeneratedValue(strategy = IDENTITY)
     private Long id;
     private String title;
+    @Column(length = 300)
     private String content;
     private Long likes;
     private Long views;
