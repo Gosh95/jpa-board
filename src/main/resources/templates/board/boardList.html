@@ -8,9 +8,20 @@
 
 <main class="container">
   <div th:replace="~{/fragments/fragmentTitle :: title (|#{board.main.title}|)}"></div>
+
   <div class="d-flex flex-row-reverse bd-highlight">
-    <button>정렬</button>
+    <div class="dropdown">
+      <button class="btn btn-primary dropdown-toggle" type="button" id="sort" data-bs-toggle="dropdown" aria-expanded="false">정렬</button>
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="sort">
+        <li><a class="dropdown-item" href="/boards">초기화</a></li>
+        <li><a class="dropdown-item" href="?property=views&direction=desc">조회수🔻</a></li>
+        <li><a class="dropdown-item" href="?property=views&direction=asc">조회수🔺</a></li>
+        <li><a class="dropdown-item" href="?property=createdAt&direction=desc">날짜🔻</a></li>
+        <li><a class="dropdown-item" href="?property=createdAt&direction=asc">날짜🔺</a></li>
+      </ul>
+    </div>
   </div>
+
   <table class="table">
     <thead>
     <tr>
@@ -32,27 +43,28 @@
     </tbody>
   </table>
 
+
   <nav aria-label="Page navigation example" th:if="${!boardList.isEmpty()}"
        th:with="first = ${T(Math).floor(boardList.number/10) * 10 + 1},
                 last = (${first + 9 > boardList.getTotalPages() ? boardList.getTotalPages() : first + 9}),
                 getNumber = ${boardList.number}, totalPage = ${boardList.getTotalPages() - 1}">
     <ul class="pagination justify-content-center">
       <li class="page-item" th:classappend="${boardList.first} ? 'disabled'">
-        <a class="page-link" th:href="@{/boards(page=0)}" th:text="${'<<'}"></a>
+        <a class="page-link" th:href="@{/boards(property=${property}, direction=${direction}, page=0)}" th:text="${'<<'}"></a>
       </li>
       <li class="page-item" th:classappend="${boardList.first} ? 'none'" th:with="prev=${T(Math).abs(getNumber / 10) * 10 - 1}">
-        <a class="page-link" th:href="@{/boards(page=${prev > 0 ? prev : 0})}" th:text="${'<'}"></a>
+        <a class="page-link" th:href="@{/boards(property=${property}, direction=${direction}, page=${prev > 0 ? prev : 0})}" th:text="${'<'}"></a>
       </li>
       <th:block th:each="pageNum : ${#numbers.sequence(first, last)}">
         <li class="page-item" th:classappend="${getNumber == pageNum - 1} ? 'disabled'">
-          <a class="page-link" th:href="@{/boards(page=${pageNum - 1})}" th:text="${pageNum}">1</a></li>
+          <a class="page-link" th:href="@{/boards(property=${property}, direction=${direction}, page=${pageNum - 1})}" th:text="${pageNum}">1</a></li>
         <li class="page-item">
       </th:block>
       <li class="page-item" th:classappend="${boardList.last} ? 'none'" th:with="next=${T(Math).abs(getNumber / 10) * 10 + 10}">
-        <a class="page-link" th:href="@{/boards(page=${next > totalPage ? totalPage : next})}" th:text="${'>'}"></a>
+        <a class="page-link" th:href="@{/boards(property=${property}, direction=${direction}, page=${next > totalPage ? totalPage : next})}" th:text="${'>'}"></a>
       </li>
       <li class="page-item" th:classappend="${boardList.last} ? 'disabled'">
-        <a class="page-link" th:href="@{/boards(page=${totalPage})}" th:text="${'>>'}"></a>
+        <a class="page-link" th:href="@{/boards(property=${property}, direction=${direction}, page=${totalPage})}" th:text="${'>>'}"></a>
       </li>
     </ul>
   </nav>

@@ -6,7 +6,6 @@ import jpa.board.domain.dto.BoardCreateDto;
 import jpa.board.domain.dto.BoardEditDto;
 import jpa.board.domain.dto.CommentCreateDto;
 import jpa.board.exception.NotExistException;
-import jpa.board.repository.BoardRepository;
 import jpa.board.service.BoardService;
 import jpa.board.service.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,9 +36,12 @@ public class BoardController {
     private final CommentService commentService;
 
     @GetMapping
-    public String boards(Model model, @PageableDefault(size = 12, sort = "id", direction = DESC) Pageable pageable, @RequestParam(value = "property", required = false) String property) {
-        Page<Board> boardList = boardService.findAllBoard(pageable);
-        log.info("page {}", boardList.getNumber());
+    public String boards(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(value = "property", defaultValue = "id") String property, @RequestParam(value = "direction", defaultValue = "desc") String direction) {
+        Page<Board> boardList = boardService.findAllBoard(page, property, direction);
+
+        model.addAttribute("page", page);
+        model.addAttribute("property", property);
+        model.addAttribute("direction", direction);
         model.addAttribute("boardList", boardList);
 
         return "/board/boardList";
@@ -126,7 +127,10 @@ public class BoardController {
     }
 
     @GetMapping("/best-board")
-    public String bestBoard() {
+    public String bestBoard(Model model) {
+        Page<Board> boards = boardService.findAllBoard(0, "likes", "desc");
+
+        model.addAttribute("boardList", boards.getContent());
 
         return "/board/bestBoard";
     }
@@ -145,6 +149,13 @@ public class BoardController {
         Comment newComment = comment.createComment(commentCreateDto);
 
         commentService.createComment(boardId, newComment);
+
+        return "redirect:/boards/{boardId}/comments";
+    }
+
+    @PostMapping("/{boardId}/likes")
+    public String addLikes(@PathVariable Long boardId) {
+        boardService.addLikes(boardId);
 
         return "redirect:/boards/{boardId}/comments";
     }

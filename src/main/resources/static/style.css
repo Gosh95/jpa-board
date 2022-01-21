@@ -105,3 +105,20 @@
 .comment-btn {
     background-color: black;
 }
+
+.like-btn {
+    padding: 14px;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 1px solid red;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.like-btn:hover {
+    transform: scale(0.95);
+    transition: 0.2s ease-in-out;
+}

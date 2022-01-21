@@ -30,16 +30,17 @@ public class InitData {
         private final EntityManager em;
 
         public void init() {
-                Board board = Board.builder().content("content").title("title").build();
-
+            for(int i = 0; i < 200; i++) {
+                Board board = Board.builder().content("내용" + i).title("제목" + i).build();
                 em.persist(board);
 
-                for(int i = 0; i < 100; i++) {
-                    Comment comment = Comment.builder().content("tesafhqwejfhqwejklfhjklqwefhjklqewfhklqjwefhkqjlwt" + i).build();
+                for(int j = 0; j < 50; j++) {
+                    Comment comment = Comment.builder().content("댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글" + j).build();
                     comment.setBoard(board);
 
                     em.persist(comment);
                 }
+            }
         }
     }
 }

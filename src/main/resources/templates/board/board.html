@@ -24,8 +24,17 @@
     <div class="form-control" th:text="${board.title}"></div>
   </div>
 
-  <div class="form-floating">
-    <div class="form-control content" th:text="${board.content}" style="height: 250px"></div>
+  <div class="form-floating mb-3">
+    <div class="form-control content" th:text="${board.content}" style="height: 300px"></div>
+  </div>
+
+  <div class="d-flex justify-content-center mb-2">
+      <form th:action="@{/boards/{boardId}/likes (boardId=${board.id})}" method="post">
+        <button class="btn-danger like-btn" type="submit">
+          <i class="far fa-thumbs-up fa-lg"></i>
+          <span th:text="${board.likes > 999 ? '999+' : board.likes}">좋아요</span>
+        </button>
+      </form>
   </div>
 
   <div class="write-btn">
@@ -79,18 +88,7 @@
 -->
 <script th:inline="javascript">
   const deleteBtn = document.querySelector(".btn-delete");
-  const commentBtn = document.querySelector(".comment-btn");
   const boardId = [[${board.id}]];
-
-  // commentBtn.addEventListener("click", (e) => {
-  //   const form = document.createElement('form');
-  //   form.setAttribute('action', `/boards/${boardId}/new-comment`)
-  //   form.setAttribute('method', 'post');
-  //
-  //   document.body.append(form);
-  //
-  //   form.submit();
-  // });
 
   deleteBtn.addEventListener("click", (e) => {
     const answer = confirm("정말로 삭제하시겠습니까");

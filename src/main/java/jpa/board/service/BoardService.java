@@ -7,14 +7,15 @@ import jpa.board.exception.NotExistException;
 import jpa.board.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.data.domain.Sort.Direction.ASC;
+import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @Service
 @Slf4j
@@ -54,8 +55,15 @@ public class BoardService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Board> findAllBoard(Pageable pageable) {
-        return boardRepository.findAll(pageable);
+    public Page<Board> findAllBoard(int page, String property, String direction) {
+        int size = 12;
+
+        if(direction.equals("asc")) {
+
+            return boardRepository.findAll(PageRequest.of(page, size, Sort.by(ASC, property)));
+        }
+
+        return boardRepository.findAll(PageRequest.of(page, size, Sort.by(DESC, property)));
     }
 
     public void deleteBoard(Long id) {
@@ -64,5 +72,10 @@ public class BoardService {
 
     public void addViews(Board board) {
         board.addViews();
+    }
+
+    public void addLikes(Long boardId) {
+        Board board = findBoard(boardId);
+        board.addLikes();
     }
 }
