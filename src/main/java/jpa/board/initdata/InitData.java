@@ -1,6 +1,7 @@
 package jpa.board.initdata;
 
 import jpa.board.domain.Board;
+import jpa.board.domain.Comment;
 import jpa.board.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
@@ -18,6 +19,7 @@ public class InitData {
 
     @PostConstruct
     public void addInitData() {
+
         initService.init();
     }
 
@@ -28,10 +30,16 @@ public class InitData {
         private final EntityManager em;
 
         public void init() {
-            for(int i = 0; i < 400; i++) {
-                Board board = Board.builder().title("title" + i).content("content" + i).build();
+                Board board = Board.builder().content("content").title("title").build();
+
                 em.persist(board);
-            }
+
+                for(int i = 0; i < 100; i++) {
+                    Comment comment = Comment.builder().content("tesafhqwejfhqwejklfhjklqwefhjklqewfhklqjwefhkqjlwt" + i).build();
+                    comment.setBoard(board);
+
+                    em.persist(comment);
+                }
         }
     }
 }

@@ -95,3 +95,13 @@
 .comment-btn:hover {
     opacity: 70
 }
+
+.comment-length {
+    position: absolute;
+    right: 100px;
+    bottom: 0;
+}
+
+.comment-btn {
+    background-color: black;
+}

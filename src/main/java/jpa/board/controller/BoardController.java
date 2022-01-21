@@ -1,20 +1,21 @@
 package jpa.board.controller;
 
 import jpa.board.domain.Board;
+import jpa.board.domain.Comment;
 import jpa.board.domain.dto.BoardCreateDto;
 import jpa.board.domain.dto.BoardEditDto;
+import jpa.board.domain.dto.CommentCreateDto;
 import jpa.board.exception.NotExistException;
 import jpa.board.repository.BoardRepository;
 import jpa.board.service.BoardService;
+import jpa.board.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,13 +34,8 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 @RequiredArgsConstructor
 @Slf4j
 public class BoardController {
-    private final BoardRepository boardRepository;
     private final BoardService boardService;
-
-    @ModelAttribute("totalSize")
-    public Integer totalSize() {
-        return boardRepository.findAll().size();
-    }
+    private final CommentService commentService;
 
     @GetMapping
     public String boards(Model model, @PageableDefault(size = 12, sort = "id", direction = DESC) Pageable pageable, @RequestParam(value = "property", required = false) String property) {
@@ -73,16 +69,19 @@ public class BoardController {
 
         redirectAttributes.addAttribute("boardId", boardId);
 
-        return "redirect:/boards/{boardId}";
+        return "redirect:/boards/{boardId}/comments";
     }
 
-    @GetMapping("/{boardId}")
-    public String readBoard(@PathVariable("boardId") Long boardId, Model model) {
+    @GetMapping("/{boardId}/comments")
+    public String readBoard(@PathVariable("boardId") Long boardId, @PageableDefault(size = 10, sort = "id", direction = DESC) Pageable pageable, Model model) {
         try {
-            Board findBoard = boardService.findBoard(boardId);
-            boardService.addViews(findBoard);
+            Board board = boardService.findBoard(boardId);
+            Slice<Comment> comments = commentService.findComments(boardId, pageable);
+            boardService.addViews(board);
 
-            model.addAttribute("board", findBoard);
+            model.addAttribute("board", board);
+            model.addAttribute("comments", comments);
+            model.addAttribute("commentCreateDto", new CommentCreateDto());
         } catch (NotExistException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -114,7 +113,7 @@ public class BoardController {
         }
         boardService.editBoard(boardId, boardEditDto);
 
-        return "redirect:/boards/{boardId}";
+        return "redirect:/boards/{boardId}/comments";
     }
 
     @PostMapping("/{boardId}/delete")
@@ -130,5 +129,23 @@ public class BoardController {
     public String bestBoard() {
 
         return "/board/bestBoard";
+    }
+
+    @PostMapping("/{boardId}/new-comment")
+    public String createComment(@PathVariable Long boardId, @Validated @ModelAttribute CommentCreateDto commentCreateDto, BindingResult bindingResult, Model model, @PageableDefault(size = 10, sort = "id", direction = DESC) Pageable pageable) {
+        if(bindingResult.hasErrors()) {
+            List<ObjectError> allErrors = bindingResult.getAllErrors();
+            allErrors.forEach((error) -> log.error("Error Arguments : {}, Error Message : {}", error.getArguments(), error.getDefaultMessage()));
+
+            model.addAttribute("board", boardService.findBoard(boardId));
+            model.addAttribute("comments", commentService.findComments(boardId, pageable));
+            return "/board/board";
+        }
+        Comment comment = new Comment();
+        Comment newComment = comment.createComment(commentCreateDto);
+
+        commentService.createComment(boardId, newComment);
+
+        return "redirect:/boards/{boardId}/comments";
     }
 }

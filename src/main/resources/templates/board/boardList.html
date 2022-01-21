@@ -24,7 +24,7 @@
     <tbody>
     <tr th:each="board : ${boardList}" th:style="${boardStat.even} ? 'background-color: #ecf0f1'">
       <th scope="row" th:text="${board.id}">1</th>
-      <td th:onclick="|location.href='@{/boards/{boardId} (boardId=${board.id})}'|" th:text="${board.title}" th:class="'pointer'">Mark</td>
+      <td th:onclick="|location.href='@{/boards/{boardId}/comments (boardId=${board.id})}'|" th:text="${board.title}" th:class="'pointer'">Mark</td>
       <td th:text="${board.member}">@mdo</td>
       <td th:text="${{board.createdAt}}">Otto</td>
       <td th:text="${board.views}">@mdo</td>
@@ -32,7 +32,7 @@
     </tbody>
   </table>
 
-  <nav aria-label="Page navigation example"
+  <nav aria-label="Page navigation example" th:if="${!boardList.isEmpty()}"
        th:with="first = ${T(Math).floor(boardList.number/10) * 10 + 1},
                 last = (${first + 9 > boardList.getTotalPages() ? boardList.getTotalPages() : first + 9}),
                 getNumber = ${boardList.number}, totalPage = ${boardList.getTotalPages() - 1}">

@@ -1,5 +1,6 @@
 package jpa.board.domain;
 
+import jpa.board.domain.dto.CommentCreateDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,11 +13,11 @@ import javax.persistence.*;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
-@Getter @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
+@Builder
 public class Comment {
     @Id @GeneratedValue(strategy = IDENTITY)
     private Long id;
@@ -27,8 +28,14 @@ public class Comment {
     @JoinColumn(name = "BOARD_ID")
     private Board board;
 
-    public void addComment(Board board) {
+    public void setBoard(Board board) {
         this.board = board;
-        this.board.getComments().add(this);
+        board.getComments().add(this);
+    }
+
+    public Comment createComment(CommentCreateDto commentDto) {
+        this.content = commentDto.getContent();
+
+        return this;
     }
 }

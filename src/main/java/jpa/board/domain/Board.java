@@ -14,16 +14,18 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
-@Getter @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
 public class Board extends TimeEntity {
     @Id @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "BOARD_ID")
     private Long id;
     private String title;
     @Column(length = 300)
@@ -36,10 +38,11 @@ public class Board extends TimeEntity {
     private Member member;
 
     @BatchSize(size = 200)
-    @OneToMany(mappedBy = "board")
+    @Builder.Default
+    @OneToMany(mappedBy = "board", cascade = ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
-    public void addBoard(Member member) {
+    public void setMember(Member member) {
         this.member = member;
         this.member.getBoards().add(this);
     }
