@@ -73,7 +73,7 @@ public class BoardController {
         return "redirect:/boards/{boardId}/comments";
     }
 
-    @GetMapping("/{boardId}/comments")
+    @GetMapping("/{boardId:[0-9]+}/comments")
     public String readBoard(@PathVariable("boardId") Long boardId, @PageableDefault(size = 10, sort = "id", direction = DESC) Pageable pageable, Model model) {
         try {
             Board board = boardService.findBoard(boardId);

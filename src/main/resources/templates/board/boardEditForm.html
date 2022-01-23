@@ -27,7 +27,7 @@
       <button type="submit" class="btn btn-dark">
         <span th:text="#{confirm.button}">confirm</span>
       </button>
-      <button th:onclick="|location.href='@{/boards/{boardId} (boardId=${boardEditDto.id})}'|" type="button" class="btn btn-dark">
+      <button th:onclick="|location.href='@{/boards/{boardId}/comments (boardId=${boardEditDto.id})}'|" type="button" class="btn btn-dark">
         <span th:text="#{cancel.button}">cancel</span>
       </button>
     </div>

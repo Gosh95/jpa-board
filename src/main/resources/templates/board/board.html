@@ -67,13 +67,17 @@
     </div>
   </div>
 
-  <form class="mb-3" th:object="${commentCreateDto}" th:action="@{/boards/{boardId}/new-comment (boardId=${board.id})}" method="post">
+  <form class="mb-3" th:object="${commentCreateDto}" th:action="@{/boards/{boardId}/new-comment (boardId=${board.id})}" method="post" th:if="${#request.getSession(false) != null}">
     <div class="input-group mb-1">
       <textarea id="comment" class="form-control" th:field="*{content}" th:classappend="${#fields.hasErrors('content')} ? 'is-invalid'" aria-label="With textarea" maxlength="100"></textarea>
       <button type="submit" class="btn btn-secondary comment-btn" th:text="#{enter.comment}"></button>
     </div>
     <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}" th:class="error-message"></p>
   </form>
+
+  <div th:unless="${#request.getSession(false) != null}" class="d-flex justify-content-center mb-3">
+    <span th:text="#{needLogin.comment}"></span><a th:href="@{/login(redirectURL='/boards/' + ${board.id} + '/comments')}" th:text="#{login.main.title}"></a>
+  </div>
 </main>
 
 <!-- Optional JavaScript; choose one of the two! -->

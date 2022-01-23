@@ -2,7 +2,6 @@ package jpa.board.controller;
 
 import jpa.board.domain.Member;
 import jpa.board.domain.dto.LoginDto;
-import jpa.board.domain.dto.sessionname.SessionName;
 import jpa.board.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 
 import static jpa.board.domain.dto.sessionname.SessionName.SESSION_ID;
@@ -36,32 +34,30 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(@Validated  @ModelAttribute LoginDto loginDto, BindingResult bindingResult, HttpServletRequest request) {
+    public String login(@Validated @ModelAttribute LoginDto loginDto, BindingResult bindingResult,
+                        @RequestParam(name = "redirectURL", defaultValue = "/") String redirectURL,
+                        HttpServletRequest request) {
         if(bindingResult.hasErrors()) {
-
             return "/login";
         }
 
-        Member login = memberService.login(loginDto.getLoginId(), loginDto.getPassword());
+        Member member = memberService.login(loginDto.getLoginId(), loginDto.getPassword());
 
-        if(login == null) {
+        if(member == null) {
             bindingResult.reject("login.fail");
 
             return "/login";
         }
 
-        makeSession(request, login);
-
+        makeSession(request, member);
         log.info("Login ID : {}, Password : {}, LoginTime : {}", loginDto.getLoginId(), loginDto.getPassword(), LocalDateTime.now());
 
-        return "redirect:/";
+        return "redirect:" + redirectURL;
     }
 
-    private void makeSession(HttpServletRequest request, Member login) {
+    private void makeSession(HttpServletRequest request, Member member) {
         HttpSession session = request.getSession(true);
-        session.setAttribute(SESSION_ID, login.getId());
-
-        log.info("session : {}", session.getAttribute(SESSION_ID));
+        session.setAttribute(SESSION_ID, member.getId());
     }
 
     @PostMapping("/logout")

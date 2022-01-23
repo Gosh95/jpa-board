@@ -28,6 +28,7 @@ public class Board extends TimeEntity {
     @Column(name = "BOARD_ID")
     private Long id;
     private String title;
+    private String writer;
     @Column(length = 300)
     private String content;
     private Long likes;

@@ -8,7 +8,7 @@
 
 <main class="form-signin">
 
-  <form th:action="@{/login}" method="post" th:object="${loginDto}">
+  <form method="post" th:object="${loginDto}">
     <h1 th:text="#{login.main.title}" class="mb-4"></h1>
     <div class="form-floating login-input mb-2">
       <input type="text" class="form-control" id="loginId" th:field="*{loginId}" placeholder="Login ID">
