@@ -41,6 +41,8 @@ public class InitData {
                     em.persist(comment);
                 }
             }
+
+            em.persist(Member.builder().loginId("test1").password("1234").build());
         }
     }
 }

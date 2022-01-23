@@ -26,6 +26,7 @@ public class Member extends TimeEntity{
     private String password;
     private String email;
 
+    @Builder.Default
     @OneToMany(mappedBy = "member")
     private List<Board> boards = new ArrayList<>();
 

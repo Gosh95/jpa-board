@@ -1,11 +1,11 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <head th:replace="~{/fragments/fragmentHeader :: header (~{::title})}">
+  <head th:replace="~{/fragments/fragmentHead :: head (~{::title})}">
     <title th:text="#{index.title}"></title>
   </head>
   <body>
   <nav th:replace="~{/fragments/fragmentNavigator :: nav}" />
-      
+
       <main class="container">
         <div class="bg-light p-5 rounded starter-template main-title">
           <h1 th:text="#{main}"></h1>

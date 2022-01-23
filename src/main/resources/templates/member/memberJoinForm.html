@@ -1,6 +1,6 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{/fragments/fragmentHeader :: header (~{::title})}">
+<head th:replace="~{/fragments/fragmentHead :: head (~{::title})}">
     <title th:text="#{join.main.title}"></title>
 </head>
 <body>
@@ -63,7 +63,7 @@
 
         <div class="col-md-3">
             <label for="zipcode" class="form-label">우편번호<span class="optional"> *optional</span></label>
-            <input type="text" class="form-control" id="zipcode" th:field="*{zipcode}" th:classappend="${#fields.hasErrors('zipcode')} ? 'is-invalid'"/>
+            <input type="text" class="form-control" id="zipcode" th:field="*{zipcode}" th:classappend="${#fields.hasErrors('zipcode')} ? 'is-invalid'" minlength="5" maxlength="5"/>
         </div>
 
         <div class="d-grid gap-2 col-6 mx-auto">

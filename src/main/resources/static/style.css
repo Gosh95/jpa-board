@@ -122,3 +122,48 @@
     transform: scale(0.95);
     transition: 0.2s ease-in-out;
 }
+
+.login-container span {
+    font-weight: 600;
+    opacity: 50%;
+    font-size: 18px;
+    color: #f8f6f6;
+    margin-right: 8px;
+}
+
+.login-container span:hover {
+    opacity: 100%;
+    cursor: pointer;
+}
+
+.form-signin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    top: 30%;
+}
+
+.form-signin form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 70%;
+}
+
+.login-input {
+    width: 400px;
+}
+
+.nav-find span {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.nav-find span:first-child:hover,
+.nav-find span:last-child:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}

@@ -2,12 +2,14 @@ package jpa.board.service;
 
 import jpa.board.domain.Member;
 import jpa.board.exception.DuplicatedException;
+import jpa.board.exception.NotExistException;
 import jpa.board.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -32,5 +34,11 @@ public class MemberService {
         }
 
         return member;
+    }
+
+    public Member login(String loginId, String password) {
+        Optional<Member> member = memberRepository.findMemberByLoginIdAndPassword(loginId, password);
+
+        return member.orElse(null);
     }
 }

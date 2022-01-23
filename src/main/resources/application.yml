@@ -33,6 +33,9 @@ server:
     whitelabel:
       enabled: false
 
+  servlet:
+    session:
+      timeout: 1800
 
 logging:
   level:

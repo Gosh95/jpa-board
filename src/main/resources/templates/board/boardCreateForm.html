@@ -1,6 +1,6 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{/fragments/fragmentHeader :: header (~{::title})}">
+<head th:replace="~{/fragments/fragmentHead :: head (~{::title})}">
     <title th:text="#{boardCreateForm.title}"></title>
 </head>
 <body>
@@ -37,7 +37,7 @@
     <div class="modal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-nav">
                     <h5 class="modal-title" th:text="#{modal.notification}">notification</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
