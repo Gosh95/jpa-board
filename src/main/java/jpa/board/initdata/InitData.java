@@ -31,8 +31,14 @@ public class InitData {
 
         public void init() {
             for(int i = 0; i < 200; i++) {
+                Member member = Member.builder().loginId("kim" + i).build();
+                em.persist(member);
+
                 Board board = Board.builder().content("내용" + i).title("제목" + i).build();
+                board.setMember(member);
+                member.getBoards().add(board);
                 em.persist(board);
+
 
                 for(int j = 0; j < 50; j++) {
                     Comment comment = Comment.builder().content("댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글" + j).build();

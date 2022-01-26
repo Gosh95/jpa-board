@@ -25,9 +25,12 @@ public class MemberService {
         return savedMember.getId();
     }
 
+    public Member findMember(Long id) {
+        return memberRepository.findById(id).orElse(null);
+    }
+
     private Member checkMember(Member member) {
         List<Member> membersById = memberRepository.findMembersById(member.getId());
-        List<Member> membersByLoginId = memberRepository.findMembersByLoginId(member.getLoginId());
 
         if(!membersById.isEmpty()) {
             throw new DuplicatedException("중복되는 회원입니다.");

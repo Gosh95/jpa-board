@@ -167,3 +167,24 @@
     text-decoration: underline;
     cursor: pointer;
 }
+
+.board-header {
+    border-top: 1px solid #CED4D9;
+    padding: 14px;
+    border-bottom: 1px solid #CED4D9;
+}
+
+.board-title {
+    font-weight: 600;
+    font-size: 24px;
+}
+
+.board-user {
+    border-bottom: 1px solid #CED4D9;
+    background-color: #ECF0F1;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #6d6868;
+}

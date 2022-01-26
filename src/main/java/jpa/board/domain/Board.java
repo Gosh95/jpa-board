@@ -18,7 +18,7 @@ import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
-@Getter
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -28,7 +28,6 @@ public class Board extends TimeEntity {
     @Column(name = "BOARD_ID")
     private Long id;
     private String title;
-    private String writer;
     @Column(length = 300)
     private String content;
     private Long likes;
@@ -43,22 +42,17 @@ public class Board extends TimeEntity {
     @OneToMany(mappedBy = "board", cascade = ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
-    public void setMember(Member member) {
-        this.member = member;
-        this.member.getBoards().add(this);
-    }
-
     @PrePersist
     public void prePersist() {
         this.likes = 0L;
         this.views = 0L;
     }
 
-    public Board createBoard(BoardCreateDto boardCreateDto) {
+    public Board createBoard(BoardCreateDto boardCreateDto, Member member) {
         this.title = boardCreateDto.getTitle();
         this.content = boardCreateDto.getContent();
-        this.likes = 0L;
-        this.views = 0L;
+        this.member = member;
+        this.member.getBoards().add(this);
 
         return this;
     }

@@ -2,12 +2,15 @@ package jpa.board.controller;
 
 import jpa.board.domain.Board;
 import jpa.board.domain.Comment;
+import jpa.board.domain.Member;
 import jpa.board.domain.dto.BoardCreateDto;
 import jpa.board.domain.dto.BoardEditDto;
 import jpa.board.domain.dto.CommentCreateDto;
+import jpa.board.domain.dto.sessionname.SessionName;
 import jpa.board.exception.NotExistException;
 import jpa.board.service.BoardService;
 import jpa.board.service.CommentService;
+import jpa.board.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -22,9 +25,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
+import static jpa.board.domain.dto.sessionname.SessionName.SESSION_ID;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @Controller
@@ -34,6 +39,7 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 public class BoardController {
     private final BoardService boardService;
     private final CommentService commentService;
+    private final MemberService memberService;
 
     @GetMapping
     public String boards(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(value = "property", defaultValue = "id") String property, @RequestParam(value = "direction", defaultValue = "desc") String direction) {
@@ -55,7 +61,7 @@ public class BoardController {
     }
 
     @PostMapping("/new-board")
-    public String createBoard(@Valid @ModelAttribute BoardCreateDto boardCreateDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String createBoard(@Valid @ModelAttribute BoardCreateDto boardCreateDto, BindingResult bindingResult, RedirectAttributes redirectAttributes, @SessionAttribute(name = SESSION_ID, required = false) Long memberId) {
         if(bindingResult.hasFieldErrors()) {
             List<ObjectError> allErrors = bindingResult.getAllErrors();
             allErrors.forEach((error) -> log.error("Error Arguments : {}, Error Message : {}", error.getArguments(), error.getDefaultMessage()));
@@ -63,8 +69,9 @@ public class BoardController {
             return "/board/boardCreateForm";
         }
 
+        Member member = memberService.findMember(memberId);
         Board board = new Board();
-        Board newBoard = board.createBoard(boardCreateDto);
+        Board newBoard = board.createBoard(boardCreateDto, member);
 
         Long boardId = boardService.createBoard(newBoard);
 
