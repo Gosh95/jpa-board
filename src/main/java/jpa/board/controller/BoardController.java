@@ -25,6 +25,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
@@ -40,6 +41,14 @@ public class BoardController {
     private final BoardService boardService;
     private final CommentService commentService;
     private final MemberService memberService;
+
+    @ModelAttribute("referer")
+    public String referer(HttpServletRequest request) {
+        String referer = request.getHeader("referer");
+        referer = referer.replace("http://localhost:3030", "");
+
+        return referer;
+    }
 
     @GetMapping
     public String boards(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(value = "property", defaultValue = "id") String property, @RequestParam(value = "direction", defaultValue = "desc") String direction) {

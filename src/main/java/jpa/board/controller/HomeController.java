@@ -10,8 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 public class HomeController {
     @RequestMapping
-    public String home() {
+    public String home(HttpServletRequest request) {
         log.info("home");
+        request.getHeaderNames().asIterator().forEachRemaining(name -> log.info("{} : {}", name, request.getHeader(name)));
 
         return "/index";
     }
