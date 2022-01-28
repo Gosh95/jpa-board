@@ -119,6 +119,7 @@ public class BoardController {
 
             return "/board/boardEditForm";
         }
+
         boardService.editBoard(boardId, boardEditDto);
 
         return "redirect:/boards/{boardId}/comments";

@@ -19,9 +19,7 @@
         <li class="nav-item">
           <a class="nav-link" th:classappend="${#request.getServletPath() == '/boards/new-board'} ? 'active'" th:href="@{/boards/new-board}" th:text="#{write.main.title}">글쓰기</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" th:classappend="${#request.getServletPath() == '/boards/anonymous'} ? 'active'" th:href="@{/boards/anonymous}" th:text="#{anonymous.boards.title}">익명 게시판</a>
-        </li>
+
       </ul>
       <div class="d-flex justify-content-center login-container">
         <span class="login" th:onclick="|location.href='@{/login}'|" th:text="#{login.main.title}"} th:class="${#request.getSession(false) != null} ? 'none'">LOG IN</span>

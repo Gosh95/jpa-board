@@ -2,6 +2,7 @@ package jpa.board.service;
 
 import jpa.board.domain.Board;
 import jpa.board.domain.dto.BoardEditDto;
+import jpa.board.exception.DontHaveAuthority;
 import jpa.board.exception.DuplicatedException;
 import jpa.board.exception.NotExistException;
 import jpa.board.repository.BoardRepository;

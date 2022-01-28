@@ -24,7 +24,7 @@
     <tr th:each="board : ${boardList}" th:style="${boardStat.even} ? 'background-color: #ecf0f1'">
       <th scope="row" th:text="${board.id}"></th>
       <td th:onclick="|location.href='@{/boards/{boardId}/comments (boardId=${board.id})}'|" th:text="${board.title}" th:class="'pointer'">Mark</td>
-      <td th:text="${board.member}">writer</td>
+      <td th:text="${board.member.loginId}">writer</td>
       <td th:text="${{board.createdAt}}">date</td>
       <td th:text="${board.likes > 999 ? '999+' : board.likes}">likes</td>
     </tr>
