@@ -1,0 +1,53 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragments/fragmentHead :: head (~{::title})}">
+    <title th:text="#{login.title}"></title>
+</head>
+<body class="text-center">
+<nav th:replace="~{/fragments/fragmentNavigator :: nav}" />
+
+<main class="form-signin">
+
+    <form method="post" th:object="${findLoginIdDto}">
+        <h1 th:text="#{find.lostid}" class="mb-4"></h1>
+        <div class="form-floating login-input mb-2">
+            <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="name">
+            <label for="name" th:text="#{name}"></label>
+            <span class="d-flex justify-content-start error-message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+        </div>
+
+        <div class="form-floating mb-1 login-input">
+            <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="Email">
+            <label for="email" th:text="#{email}">Email</label>
+            <span class="d-flex justify-content-start error-message" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+        </div>
+
+        <div class="login-input mb-3" th:if="${#fields.hasGlobalErrors()}">
+            <span class="d-flex justify-content-start error-message" th:errors="${findLoginIdDto}">aaa</span>
+        </div>
+
+        <div class="mb-2 nav-find">
+            <span th:onclick="|location.href='@{/members/lost-id}'|">아이디 찾기</span>
+            <span>/</span>
+            <span th:onclick="|location.href='@{/members/lost-password}'|">패스워드 찾기</span>
+        </div>
+
+        <div class="login-input">
+            <button class="w-100 btn btn-lg btn-primary mb-1" type="submit" th:text="#{confirm.button}">Confirm</button>
+            <button class="w-100 btn btn-lg btn-primary" th:onclick="|location.href='@{/}'|" type="button" th:text="#{cancel.button}">Cancel</button>
+        </div>
+    </form>
+</main>
+
+<!-- Optional JavaScript; choose one of the two! -->
+
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+<!-- Option 2: Separate Popper and Bootstrap JS -->
+<!--
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+-->
+</body>
+</html>

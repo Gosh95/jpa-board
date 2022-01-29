@@ -22,7 +22,7 @@
 
       </ul>
       <div class="d-flex justify-content-center login-container">
-        <span class="login" th:onclick="|location.href='@{/login(redirectURL = ${referer})}'|" th:text="#{login.main.title}"} th:class="${#request.getSession(false) != null} ? 'none'">LOG IN</span>
+        <span class="login" th:onclick="|location.href='@{/login}'|" th:text="#{login.main.title}"} th:class="${#request.getSession(false) != null} ? 'none'">LOG IN</span>
         <span class="signup" th:onclick="|location.href='@{/members/new}'|" th:text="#{join.main.title}" th:class="${#request.getSession(false) != null} ? 'none'">SIGN UP</span>
         <span class="logout" th:onclick="|doLogout(this)|" th:text="#{logout.main.title}" th:class="${#request.getSession(false) == null} ? 'none'">LOG OUT</span>
       </div>

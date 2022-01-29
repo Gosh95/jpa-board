@@ -188,3 +188,9 @@
     justify-content: space-between;
     color: #6d6868;
 }
+
+.found-id {
+    padding: 14px;
+    background-color: #F8F9FA;
+    border-radius: 10px;
+}

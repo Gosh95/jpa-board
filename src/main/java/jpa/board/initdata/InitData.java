@@ -30,6 +30,9 @@ public class InitData {
         private final EntityManager em;
 
         public void init() {
+            Member test = Member.builder().name("kim").password("1234").email("test@qq.qq").loginId("test").build();
+            em.persist(test);
+
             for(int i = 0; i < 200; i++) {
                 Member member = Member.builder().loginId("kim" + i).build();
                 em.persist(member);

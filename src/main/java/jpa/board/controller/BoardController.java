@@ -42,14 +42,6 @@ public class BoardController {
     private final CommentService commentService;
     private final MemberService memberService;
 
-    @ModelAttribute("referer")
-    public String referer(HttpServletRequest request) {
-        String referer = request.getHeader("referer");
-        referer = referer.replace("http://localhost:3030", "");
-
-        return referer;
-    }
-
     @GetMapping
     public String boards(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(value = "property", defaultValue = "id") String property, @RequestParam(value = "direction", defaultValue = "desc") String direction) {
         Page<Board> boardList = boardService.findAllBoard(page, property, direction);

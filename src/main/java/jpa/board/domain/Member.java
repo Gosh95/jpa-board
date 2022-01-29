@@ -42,4 +42,8 @@ public class Member extends TimeEntity{
 
         return this;
     }
+
+    public void changePassword(String password) {
+        this.password = password;
+    }
 }
