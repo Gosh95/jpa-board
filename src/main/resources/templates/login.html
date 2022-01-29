@@ -34,7 +34,7 @@
 
     <div class="login-input">
       <button class="w-100 btn btn-lg btn-primary mb-1" type="submit" th:text="#{login.main.title}">Sign in</button>
-      <button class="w-100 btn btn-lg btn-primary" type="submit" th:text="#{join.main.title}">Sign in</button>
+      <button class="w-100 btn btn-lg btn-primary" th:onclick="|location.href='@{/members/new}'|" type="button" th:text="#{join.main.title}">Sign in</button>
     </div>
   </form>
 </main>

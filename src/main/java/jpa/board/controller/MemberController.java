@@ -9,6 +9,7 @@ import jpa.board.exception.DuplicatedException;
 import jpa.board.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -46,7 +47,17 @@ public class MemberController {
         Member member = new Member();
         Member newMember = member.joinMember(memberJoinDto);
 
-        memberService.joinMember(newMember);
+        try{
+            memberService.joinMember(newMember);
+        } catch(DuplicatedException e) {
+            log.error("중복되는 로그인 아이디 : {}", newMember.getLoginId());
+            bindingResult.rejectValue("loginId", "DuplicatedLoginId");
+            return "/member/memberJoinForm";
+        } catch(DuplicateKeyException e) {
+            log.error("기본 키 중복 : {}", newMember.getId());
+            bindingResult.reject("DuplicateMember");
+            return "redirect:/error";
+        }
 
         return "redirect:/";
     }

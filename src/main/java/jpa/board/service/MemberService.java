@@ -9,6 +9,7 @@ import jpa.board.exception.NotExistException;
 import jpa.board.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,9 +37,14 @@ public class MemberService {
 
     private Member checkMember(Member member) {
         List<Member> membersById = memberRepository.findMembersById(member.getId());
+        List<Member> membersByLoginId = memberRepository.findMembersByLoginId(member.getLoginId());
 
         if(!membersById.isEmpty()) {
-            throw new DuplicatedException("중복되는 회원입니다.");
+            throw new DuplicateKeyException("중복되는 회원입니다.");
+        }
+
+        if(!membersByLoginId.isEmpty()) {
+            throw new DuplicatedException();
         }
 
         return member;
