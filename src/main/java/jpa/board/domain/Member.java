@@ -1,11 +1,11 @@
 package jpa.board.domain;
 
+import jpa.board.domain.dto.MemberEditDto;
 import jpa.board.domain.dto.MemberJoinDto;
 import lombok.*;
 
 import javax.persistence.*;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,5 +45,13 @@ public class Member extends TimeEntity{
 
     public void changePassword(String password) {
         this.password = password;
+    }
+
+    public Member editMember(MemberEditDto memberEditDto) {
+        this.password = memberEditDto.getPassword();
+        this.email = memberEditDto.getEmail();
+        this.address = new Address(memberEditDto.getCountry(), memberEditDto.getCity(), memberEditDto.getZipcode());
+
+        return this;
     }
 }

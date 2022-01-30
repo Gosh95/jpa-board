@@ -1,11 +1,8 @@
 package jpa.board.service;
 
 import jpa.board.domain.Member;
-import jpa.board.domain.dto.FindLoginIdDto;
-import jpa.board.domain.dto.FindPasswordDto;
-import jpa.board.domain.dto.NewPasswordDto;
+import jpa.board.domain.dto.*;
 import jpa.board.exception.DuplicatedException;
-import jpa.board.exception.NotExistException;
 import jpa.board.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +16,7 @@ import java.util.Optional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class MemberService {
     private final MemberRepository memberRepository;
 
@@ -68,14 +66,42 @@ public class MemberService {
     public void newPassword(Long memberId, NewPasswordDto newPasswordDto) {
         String newPassword = newPasswordDto.getNewPassword();
 
-        if(!newPassword.equals(newPasswordDto.getCheckPassword())) {
-            throw new IllegalArgumentException();
-        }
+        checkPassword(newPassword, newPasswordDto.getCheckPassword());
 
         Optional<Member> opMem = memberRepository.findById(memberId);
-        Member member = opMem.get();
+        Member member = opMem.orElse(null);
         if(newPassword.equals(member.getPassword())) throw new DuplicatedException();
 
         member.changePassword(newPassword);
+    }
+
+    @Transactional
+    public Member editMember(Long memberId, MemberEditDto memberEditDto) {
+        Optional<Member> opMem = memberRepository.findById(memberId);
+        Member member = opMem.orElse(null);
+        member.editMember(memberEditDto);
+        return member;
+    }
+
+    @Transactional
+    public void deleteMember(Long memberId, MemberDeleteDto memberDeleteDto) throws IllegalAccessException {
+        String password = memberDeleteDto.getPassword();
+
+        checkPassword(password, memberDeleteDto.getCheckPassword());
+
+        Optional<Member> opMem = memberRepository.findById(memberId);
+        Member member = opMem.orElse(null);
+
+        if(!member.getPassword().equals(password)) {
+            throw new IllegalAccessException();
+        }
+
+        memberRepository.delete(member);
+    }
+
+    private void checkPassword(String password, String checkPassword) {
+        if(!password.equals(checkPassword)) {
+            throw new IllegalArgumentException();
+        }
     }
 }

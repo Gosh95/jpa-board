@@ -1,7 +1,7 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{/fragments/fragmentHead :: head (~{::title})}">
-    <title th:text="#{join.main.title}"></title>
+    <title th:text="#{memberJoin.title}"></title>
 </head>
 <body>
 <nav th:replace="~{/fragments/fragmentNavigator :: nav}" />
@@ -9,7 +9,7 @@
 <main class="container">
     <div th:replace="~{/fragments/fragmentTitle :: title (|#{join.main.title}|)}"></div>
     <form class="row g-3 needs-validation" th:action="@{/members/new}" method="post" th:object="${memberJoinDto}">
-        <div class="col-md-6">
+        <div class="col-md-6 mb-3">
             <label for="loginId" class="form-label">아이디</label>
             <div class="input-group has-validation">
                 <input type="text" class="form-control" id="loginId" th:field="*{loginId}" th:classappend="${#fields.hasErrors('loginId')} ? 'is-invalid'"/>
@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-6 mb-3">
             <label for="password" class="form-label">비밀번호</label>
             <input type="password" class="form-control password" id="password" th:field="*{password}" th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'"/>
             <div th:unless="${#fields.hasErrors('password')}">
@@ -33,7 +33,7 @@
             </div>
         </div>
 
-        <div class="mb-3">
+        <div class="col-md-6 mb-3">
             <label for="name" class="form-label">이름</label>
             <input type="text" class="form-control" id="name" th:field="*{name}" th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'"/>
             <div th:if="${#fields.hasErrors('name')}">
@@ -41,7 +41,7 @@
             </div>
         </div>
 
-        <div class="mb-3">
+        <div class="col-md-6 mb-3">
             <label for="email" class="form-label">Email</label>
             <input type="text" class="form-control" id="email" th:field="*{email}" placeholder="ex) name@example.com" th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'"/>
             <div th:if="${#fields.hasErrors('email')}">
@@ -49,19 +49,19 @@
             </div>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-6 mb-3">
             <label for="country" class="form-label">국가</label>
             <input type="text" class="form-control" id="country" th:field="*{country}" th:classappend="${#fields.hasErrors('city')} ? 'is-invalid'">
             <div th:if="${#fields.hasErrors('country')}">
                 <span th:class="error-message" th:errors="*{country}"></span>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 mb-3">
             <label for="city" class="form-label">도시<span class="optional"> *optional</span></label>
             <input type="text" class="form-control" id="city" th:field="*{city}" th:classappend="${#fields.hasErrors('city')} ? 'is-invalid'"/>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-3 mb-3">
             <label for="zipcode" class="form-label">우편번호<span class="optional"> *optional</span></label>
             <input type="text" class="form-control" id="zipcode" th:field="*{zipcode}" th:classappend="${#fields.hasErrors('zipcode')} ? 'is-invalid'" minlength="5" maxlength="5"/>
         </div>

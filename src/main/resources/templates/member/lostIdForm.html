@@ -1,13 +1,12 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{/fragments/fragmentHead :: head (~{::title})}">
-    <title th:text="#{login.title}"></title>
+    <title th:text="#{lostId.title}"></title>
 </head>
 <body class="text-center">
 <nav th:replace="~{/fragments/fragmentNavigator :: nav}" />
 
 <main class="form-signin">
-
     <form method="post" th:object="${findLoginIdDto}">
         <h1 th:text="#{find.lostid}" class="mb-4"></h1>
         <div class="form-floating login-input mb-2">
@@ -29,7 +28,7 @@
         <div class="mb-2 nav-find">
             <span th:onclick="|location.href='@{/members/lost-id}'|">아이디 찾기</span>
             <span>/</span>
-            <span th:onclick="|location.href='@{/members/lost-password}'|">패스워드 찾기</span>
+            <span th:onclick="|location.href='@{/members/lost-password}'|">비밀번호 찾기</span>
         </div>
 
         <div class="login-input">

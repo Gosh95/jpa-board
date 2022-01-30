@@ -1,0 +1,92 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragments/fragmentHead :: head (~{::title})}">
+  <title th:text="#{memberInfo.title}"></title>
+</head>
+<body>
+<nav th:replace="~{/fragments/fragmentNavigator :: nav}"/>
+
+<main class="container">
+  <div th:replace="~{/fragments/fragmentTitle :: title ('회원 정보')}" />
+  <section th:object="${member}" class="mb-3 member-info">
+      <div class="member-info-grid">
+        <div class="member-info-title">
+          <span>이름</span>
+        </div>
+        <div class="member-info-content">
+          <span th:text="${member.name}">이름</span>
+        </div>
+      </div>
+
+      <div class="member-info-grid">
+        <div class="member-info-title">
+          <span>아이디</span>
+        </div>
+        <div class="member-info-content">
+          <span th:text="${member.loginId}">아이디</span>
+        </div>
+      </div>
+
+      <div class="member-info-grid">
+        <div class="member-info-title">
+          <span>이메일</span>
+        </div>
+        <div class="member-info-content">
+          <span th:text="${member.email}">이메일</span>
+        </div>
+      </div>
+
+      <div class="member-info-grid">
+        <div class="member-info-title">
+          <span>국가</span>
+        </div>
+        <div class="member-info-content">
+          <span th:text="${member.address.country}">국가</span>
+        </div>
+      </div>
+
+      <div class="member-info-grid">
+          <div class="member-info-title">
+              <span>도시</span>
+          </div>
+          <div class="member-info-content">
+              <span th:text="${member.address.city}">도시</span>
+          </div>
+      </div>
+
+      <div class="member-info-grid">
+          <div class="member-info-title">
+              <span>우편번호</span>
+          </div>
+          <div class="member-info-content">
+              <span th:text="${member.address.zipcode}">우편번호</span>
+          </div>
+      </div>
+
+      <div class="member-info-grid">
+          <div class="member-info-title">
+              <span>수정일자</span>
+          </div>
+          <div class="member-info-content">
+              <span th:text="${#temporals.format(member.updatedAt, 'yyyy-MM-dd HH:mm:ss')}">수정일자</span>
+          </div>
+      </div>
+  </section>
+    <div class="d-grid gap-2 col-6 mx-auto">
+        <button class="btn btn-dark" th:onclick="|location.href='@{/members/{memberId}/edit (memberId=${member.id})}'|" type="button" th:text="${'회원 수정'}"></button>
+        <button class="btn btn-dark del-member-btn" th:onclick="|location.href='@{/members/{memberId}/delete (memberId=${member.id})}'|" type="button" th:text="${'회원 탈퇴'}"></button>
+    </div>
+</main>
+
+<!-- Optional JavaScript; choose one of the two! -->
+
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+<!-- Option 2: Separate Popper and Bootstrap JS -->
+<!--
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+-->
+</body>
+</html>

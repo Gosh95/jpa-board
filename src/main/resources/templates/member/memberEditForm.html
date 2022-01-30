@@ -1,0 +1,71 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragments/fragmentHead :: head (~{::title})}">
+  <title th:text="#{memberEdit.title}"></title>
+</head>
+<body>
+<nav th:replace="~{/fragments/fragmentNavigator :: nav}" />
+
+<main class="container">
+  <div th:replace="~{/fragments/fragmentTitle :: title ('회원 수정')}"></div>
+  <form class="row g-3 needs-validation" th:action="@{/members/{memberId}/edit (memberId = ${memberId})}" method="post" th:object="${memberEditDto}">
+    <div class="col">
+      <label for="password" class="form-label">비밀번호</label>
+      <input type="text" class="form-control password" id="password" th:field="*{password}" th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'"/>
+      <div th:unless="${#fields.hasErrors('password')}">
+        <span>* 소문자 + 대문자 + 특수문자 8자 이상</span>
+      </div>
+      <div th:if="${#fields.hasErrors('password')}">
+        <span th:class="error-message" th:errors="*{password}"></span>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input type="text" class="form-control" id="email" th:field="*{email}" placeholder="ex) name@example.com" th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'"/>
+      <div th:if="${#fields.hasErrors('email')}">
+        <span th:class="error-message" th:errors="*{email}"></span>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <label for="country" class="form-label">국가</label>
+      <input type="text" class="form-control" id="country" th:field="*{country}" th:classappend="${#fields.hasErrors('city')} ? 'is-invalid'">
+      <div th:if="${#fields.hasErrors('country')}">
+        <span th:class="error-message" th:errors="*{country}"></span>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <label for="city" class="form-label">도시<span class="optional"> *optional</span></label>
+      <input type="text" class="form-control" id="city" th:field="*{city}" th:classappend="${#fields.hasErrors('city')} ? 'is-invalid'"/>
+    </div>
+
+    <div class="col-md-3">
+      <label for="zipcode" class="form-label">우편번호<span class="optional"> *optional</span></label>
+      <input type="text" class="form-control" id="zipcode" th:field="*{zipcode}" th:classappend="${#fields.hasErrors('zipcode')} ? 'is-invalid'" minlength="5" maxlength="5"/>
+      <div th:if="${#fields.hasErrors('zipcode')}">
+        <span th:class="error-message" th:errors="*{zipcode}"></span>
+      </div>
+    </div>
+
+    <div class="d-grid gap-2 col-6 mx-auto">
+      <button class="btn btn-dark" type="submit" th:text="#{confirm.button}"></button>
+      <button class="btn btn-dark" type="button" th:onclick="|location.href='@{/members/{memberId}/info (memberId=${memberId})}'|" th:text="#{cancel.button}"></button>
+    </div>
+  </form>
+
+  </form>
+</main>
+
+<!-- Optional JavaScript; choose one of the two! -->
+
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+<!-- Option 2: Separate Popper and Bootstrap JS -->
+<!--
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+-->
+</body>
+</html>

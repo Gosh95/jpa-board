@@ -37,5 +37,6 @@ public class MemberJoinDto {
 
     private String city;
 
+    @Pattern(regexp = "^[0-9]*$")
     private String zipcode;
 }

@@ -1,10 +1,7 @@
 package jpa.board.controller;
 
 import jpa.board.domain.Member;
-import jpa.board.domain.dto.FindLoginIdDto;
-import jpa.board.domain.dto.FindPasswordDto;
-import jpa.board.domain.dto.MemberJoinDto;
-import jpa.board.domain.dto.NewPasswordDto;
+import jpa.board.domain.dto.*;
 import jpa.board.exception.DuplicatedException;
 import jpa.board.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +15,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.net.http.HttpRequest;
 import java.util.List;
 
 @Controller
@@ -59,7 +59,7 @@ public class MemberController {
             return "redirect:/error";
         }
 
-        return "redirect:/";
+        return "redirect:/login?redirectURL=/";
     }
 
     @GetMapping("/lost-id")
@@ -155,5 +155,85 @@ public class MemberController {
         }
 
         return "redirect:/login?redirectURL=/boards";
+    }
+
+    @GetMapping("/{memberId}/info")
+    public String getMemberInfo(@PathVariable Long memberId, Model model) {
+        Member member = memberService.findMember(memberId);
+        model.addAttribute("member", member);
+
+        return "/member/memberInfo";
+    }
+
+    @GetMapping("/{memberId}/edit")
+    public String editMemberForm(@PathVariable Long memberId, Model model) {
+        Member member = memberService.findMember(memberId);
+        MemberEditDto memberEditDto = getMemberEditDto(member);
+        model.addAttribute("memberEditDto", memberEditDto);
+        model.addAttribute("memberId", memberId);
+
+        return "/member/memberEditForm";
+    }
+
+    @PostMapping("/{memberId}/edit")
+    public String editMemberForm(@PathVariable Long memberId, @Validated @ModelAttribute MemberEditDto memberEditDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> allErrors = bindingResult.getGlobalErrors();
+            allErrors.forEach(error -> log.error("Error Arguments : {}, Error Message : {}", error.getDefaultMessage()));
+
+            return "/member/memberEditForm";
+        }
+
+        memberService.editMember(memberId, memberEditDto);
+        redirectAttributes.addAttribute("memberId", memberId);
+
+        return "redirect:/members/{memberId}/info";
+    }
+
+    private MemberEditDto getMemberEditDto(Member member) {
+        MemberEditDto memberEditDto = new MemberEditDto();
+        return memberEditDto.convertToMemberEditDto(member);
+    }
+
+    @GetMapping("/{memberId}/delete")
+    public String deleteMemberForm(@PathVariable Long memberId, Model model) {
+        model.addAttribute("memberDeleteDto", new MemberDeleteDto());
+        model.addAttribute("memberId", memberId);
+
+        return "/member/memberDeleteForm";
+    }
+
+    @PostMapping("/{memberId}/delete")
+    public String deleteMember(@PathVariable Long memberId, @Validated @ModelAttribute MemberDeleteDto memberDeleteDto, BindingResult bindingResult, HttpServletRequest request) {
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> allErrors = bindingResult.getGlobalErrors();
+            allErrors.forEach(error -> log.error("Error Arguments : {}, Error Message : {}", error.getDefaultMessage()));
+
+            return "/member/memberDeleteForm";
+        }
+
+        try {
+            memberService.deleteMember(memberId, memberDeleteDto);
+
+            HttpSession httpSession = request.getSession(false);
+            httpSession.invalidate();
+        } catch(IllegalArgumentException e) {
+            log.error("두 비밀번호가 일치하지 않음.");
+            bindingResult.reject("NotMatchPassword");
+
+            return "/member/memberDeleteForm";
+        } catch(IllegalAccessException e) {
+            log.error("회원 정보의 비밀번호가 일치하지 않음.");
+            bindingResult.reject("NotEqualPassword");
+
+            return "/member/memberDeleteForm";
+        }
+
+        return "redirect:/deletion-result";
+    }
+
+    @GetMapping("/deletion-result")
+    public String deletionResult() {
+        return "member/deletionResult";
     }
 }

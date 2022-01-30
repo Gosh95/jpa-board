@@ -1,20 +1,18 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{/fragments/fragmentHead :: head (~{::title})}">
-    <title th:text="#{lostId.title}"></title>
+  <title th:text="#{index.title}"></title>
 </head>
-<body class="text-center">
+<body>
 <nav th:replace="~{/fragments/fragmentNavigator :: nav}" />
 
-<main class="form-signin">
-    <div class="login-input mb-3">
-        <h1 th:text="#{find.lostid}" class="mb-4"></h1>
-        <div class="mb-5 found-id">
-            <h3 th:text="${findLoginId}"></h3>
-        </div>
-        <button class="w-100 btn btn-lg btn-primary mb-1" th:onclick="|location.href='@{/login}'|" type="button" th:text="#{login.main.title}">Login</button>
-        <button class="w-100 btn btn-lg btn-primary" th:onclick="|location.href='@{/}'|" type="button" th:text="#{confirm.button}">Confirm</button>
-    </div>
+<main class="container">
+  <div class="bg-light p-5 rounded starter-template main-title">
+    <h1 th:text="${'회원 탈퇴가 완료되었습니다. 이용해주셔서 감사합니다.'}"></h1>
+    <a class="btn btn-lg btn-primary" href="/" role="button">
+      <span><span th:text="${'홈으로'}"></span>
+    </a>
+  </div>
 </main>
 
 <!-- Optional JavaScript; choose one of the two! -->

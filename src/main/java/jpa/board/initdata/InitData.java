@@ -1,5 +1,6 @@
 package jpa.board.initdata;
 
+import jpa.board.domain.Address;
 import jpa.board.domain.Board;
 import jpa.board.domain.Comment;
 import jpa.board.domain.Member;
@@ -30,7 +31,8 @@ public class InitData {
         private final EntityManager em;
 
         public void init() {
-            Member test = Member.builder().name("kim").password("1234").email("test@qq.qq").loginId("test").build();
+
+            Member test = Member.builder().name("kim").password("1234").email("test@qq.qq").loginId("test").address(new Address("korea", "jeju", "63099")).build();
             em.persist(test);
 
             for(int i = 0; i < 200; i++) {

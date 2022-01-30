@@ -194,3 +194,32 @@
     background-color: #F8F9FA;
     border-radius: 10px;
 }
+
+.member-info {
+    border-top: 1px solid #2d2b2b;
+    border-bottom: 1px solid #2d2b2b;
+}
+
+.member-info-grid {
+    display: grid;
+    grid-template-columns: 3fr 3fr;
+    gap: 16px;
+    height: 4rem;
+    border-bottom: 1px solid rgba(223, 205, 205, 0.7);
+}
+
+.member-info-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 400;
+    font-size: 20px;
+    background-color: #ecf0f1;
+}
+
+.member-info-content {
+    display: flex;
+    align-items: center;
+    font-weight: 400;
+    font-size: 20px;
+}
