@@ -229,7 +229,7 @@ public class MemberController {
             return "/member/memberDeleteForm";
         }
 
-        return "redirect:/deletion-result";
+        return "redirect:/members/deletion-result";
     }
 
     @GetMapping("/deletion-result")
