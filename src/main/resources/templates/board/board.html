@@ -8,18 +8,6 @@
 
 <main class="container">
   <div th:replace="~{/fragments/fragmentTitle :: title (|#{post.main.title}|)}" ></div>
-<!--  <div class="d-flex justify-content-between mb-3">-->
-<!--    <div th:with="prev=${board.id - 1}" th:classappend="${prev == 0} ? 'hidden'">-->
-<!--      <button class="btn btn-dark" th:onclick="|location.href='@{/boards/{boardId} (boardId = ${prev})}'|">-->
-<!--        <span th:text="#{prev.board}"></span>-->
-<!--      </button>-->
-<!--    </div>-->
-<!--    <div th:with="next=${board.id + 1}" th:classappend="${next == totalSize + 1} ? 'hidden'">-->
-<!--      <button class="btn btn-dark" th:onclick="|location.href='@{/boards/{boardId} (boardId = ${next})}'|">-->
-<!--        <span th:text="#{next.board}"></span>-->
-<!--      </button>-->
-<!--    </div>-->
-<!--  </div>-->
   <div class="board-header">
     <h2 class="board-title" th:text="${board.title}"></h2>
   </div>
@@ -67,7 +55,7 @@
       <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#212529"/><text x="50%" y="50%" fill="#007bff" dy=".3em"></text></svg>
 
       <p class="pb-3 mb-0 small lh-sm">
-        <strong class="d-block text-gray-dark" th:text="${'writer'}">@username</strong>
+        <strong class="d-block text-gray-dark" th:text="${comment.member.name}">name</strong>
         <span th:text="${comment.content}">
         </span>
       </p>

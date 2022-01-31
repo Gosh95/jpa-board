@@ -47,13 +47,15 @@ public class InitData {
 
                 for(int j = 0; j < 50; j++) {
                     Comment comment = Comment.builder().content("댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글" + j).build();
+                    Member tMember = Member.builder().name("test" + j).build();
+                    em.persist(tMember);
+
                     comment.setBoard(board);
+                    comment.setMember(tMember);
 
                     em.persist(comment);
                 }
             }
-
-            em.persist(Member.builder().loginId("test1").password("1234").build());
         }
     }
 }

@@ -28,14 +28,23 @@ public class Comment {
     @JoinColumn(name = "BOARD_ID")
     private Board board;
 
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
     public void setBoard(Board board) {
         this.board = board;
         board.getComments().add(this);
     }
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
 
     public Comment createComment(CommentCreateDto commentDto) {
         this.content = commentDto.getContent();
 
         return this;
     }
+
 }

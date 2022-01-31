@@ -6,7 +6,6 @@ import jpa.board.domain.Member;
 import jpa.board.domain.dto.BoardCreateDto;
 import jpa.board.domain.dto.BoardEditDto;
 import jpa.board.domain.dto.CommentCreateDto;
-import jpa.board.domain.dto.sessionname.SessionName;
 import jpa.board.exception.NotExistException;
 import jpa.board.service.BoardService;
 import jpa.board.service.CommentService;
@@ -24,9 +23,6 @@ import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -145,7 +141,7 @@ public class BoardController {
     }
 
     @PostMapping("/{boardId}/new-comment")
-    public String createComment(@PathVariable Long boardId, @Validated @ModelAttribute CommentCreateDto commentCreateDto, BindingResult bindingResult, Model model, @PageableDefault(size = 10, sort = "id", direction = DESC) Pageable pageable) {
+    public String createComment(@PathVariable Long boardId, @Validated @ModelAttribute CommentCreateDto commentCreateDto, BindingResult bindingResult, Model model, @PageableDefault(size = 10, sort = "id", direction = DESC) Pageable pageable, @SessionAttribute(name = SESSION_ID, required = true) Long memberId) {
         if(bindingResult.hasErrors()) {
             List<ObjectError> allErrors = bindingResult.getAllErrors();
             allErrors.forEach((error) -> log.error("Error Arguments : {}, Error Message : {}", error.getArguments(), error.getDefaultMessage()));
@@ -157,7 +153,7 @@ public class BoardController {
         Comment comment = new Comment();
         Comment newComment = comment.createComment(commentCreateDto);
 
-        commentService.createComment(boardId, newComment);
+        commentService.createComment(memberId, boardId, newComment);
 
         return "redirect:/boards/{boardId}/comments";
     }
